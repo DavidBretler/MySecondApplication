@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Find me a ride</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="sign_in">sign_in</string>
+    <string name="sign_up">sign_up</string>
+</resources>
