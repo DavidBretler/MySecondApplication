@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.MySecondApplication">
+        <activity
+            android:name=".UI.NavigationDrawer"
+            android:label="@string/title_activity_navigation_drawer"
+            android:theme="@style/Theme.MySecondApplication.NoActionBar"></activity>
         <activity android:name=".UI.Login_Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
