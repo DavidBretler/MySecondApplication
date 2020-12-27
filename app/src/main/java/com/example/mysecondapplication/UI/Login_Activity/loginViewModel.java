@@ -12,25 +12,10 @@ import com.example.mysecondapplication.Entities.Travel;
 import java.util.List;
 
 public class loginViewModel extends AndroidViewModel {
-    ITravelRepository repository;
-    public loginViewModel(Application p) {
+
+
+    public loginViewModel(Application p)
+    {
         super(p);
-        repository =  TravelRepository.getInstance(p);//??
-    }
-    void addTravel(Travel travel)
-    {
-        repository.addTravel(travel);
-    }
-    void updateTravel(Travel travel)
-    {
-        repository.updateTravel(travel);
-    }
-    MutableLiveData<List<Travel>> getAllTravels()
-    {
-        return (MutableLiveData<List<Travel>>)repository.getAllTravels();
-    }
-    MutableLiveData<Boolean> getIsSuccess()
-    {
-        return repository.getIsSuccess();
     }
 }

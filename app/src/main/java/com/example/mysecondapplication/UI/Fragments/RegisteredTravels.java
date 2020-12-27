@@ -1,4 +1,4 @@
-package com.example.mysecondapplication.UI.Fragments.Registered_Travels;
+package com.example.mysecondapplication.UI.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,15 +17,15 @@ import com.example.mysecondapplication.R;
 
 public class RegisteredTravels extends Fragment {
 
-    private RegisteredTravelsVM registeredTravelsVM;
+    private NavigationDrawerVM navigationDrawerVM;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        registeredTravelsVM =
-                new ViewModelProvider(this).get(RegisteredTravelsVM.class);
+        navigationDrawerVM =
+                new ViewModelProvider(this).get(NavigationDrawerVM.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
-        registeredTravelsVM.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        navigationDrawerVM.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

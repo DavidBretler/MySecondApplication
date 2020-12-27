@@ -1,4 +1,4 @@
-package com.example.mysecondapplication.UI.Fragments.Company_Travels;
+package com.example.mysecondapplication.UI.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,17 +15,18 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mysecondapplication.R;
 
 
+
 public class CompanyTravels extends Fragment {
 
-    private CompanyTravelsVM companyTravelsVM;
+    private  NavigationDrawerVM navigationDrawerVM;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        companyTravelsVM =
-                new ViewModelProvider(this).get(CompanyTravelsVM.class);
+        navigationDrawerVM =
+                new ViewModelProvider(this).get(NavigationDrawerVM.class);
         View root = inflater.inflate(R.layout.fragment_gallery, container, false);
         final TextView textView = root.findViewById(R.id.text_gallery);
-        companyTravelsVM.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        navigationDrawerVM.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

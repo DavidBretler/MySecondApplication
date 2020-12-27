@@ -57,19 +57,13 @@ public class Travel {
 
     public String getClientEmail() {return this.clientEmail; }
 
-   // public String getNumPassengers2() { return Integer.toString(this.numOfPassenger); }
+
     public int getNumOfPassenger() {    return numOfPassenger; }
 
     public RequestType getRequestType() { return requestType; }
 
-   // public Integer getRequestType2() { return RequestType.getTypeInt(requestType);}
-
-    // TODO: 21/12/2020 fix send twice to FB 
-  //  public String getTravelDate2() { return new DateConverter().dateToTimestamp(this.travelDate);}
-
     public Date getTravelDate() { return this.travelDate;}
 
-   // public String getArrivalDate2() { return new DateConverter().dateToTimestamp(this.arrivalDate);}
 
     public Date getArrivalDate() { return this.arrivalDate;}
 

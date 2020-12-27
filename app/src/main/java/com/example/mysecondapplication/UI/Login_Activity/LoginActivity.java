@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,25 +19,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.example.mysecondapplication.Entities.Travel;
-import com.example.mysecondapplication.Entities.UserLocation;
 import com.example.mysecondapplication.R;
-//import com.google.firebase.auth.FirebaseAuth;
-import com.example.mysecondapplication.UI.NavigationDrawer;
+import com.example.mysecondapplication.UI.NavigationDrawer.NavigationDrawer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
         public FirebaseAuth mAuth;
@@ -87,79 +73,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Btn_use_last_user_details.setOnClickListener(this);
             Btn_verify_email.setVisibility(View.GONE);
 
-            checkData();
+  //          checkData();
         }
 
-        private void checkData() {
-          //  loginViewModel =  ViewModelProviders.of(this).get(loginViewModel.class);
-            loginViewModel = new ViewModelProvider(this).get(loginViewModel.class);
-            loginViewModel.getAllTravels().observe(this, new Observer<List<Travel>>() {
-                @Override
-                public void onChanged(List<Travel> travels) {
-                    for (Travel tmp : travels) {
-                        Log.e("test", tmp.getClientName() + ":  ");
-                        //https://www.callicoder.com/java-hashmap/
-                        //HashMap is a hash table based implementation of Java’s Map interface
-                        Iterator it = tmp.getCompany().entrySet().iterator();
-                        while (it.hasNext()) {
-                            Map.Entry pair = (Map.Entry) it.next();
-                            System.out.println("HashMap:  " + pair.getKey() + " = " + pair.getValue());
-
-                        }
-                    }
-                }});
-
-               loginViewModel.getIsSuccess().observe(this, new Observer<Boolean>() {
-               @Override
-                public void onChanged(Boolean t) {
-                    if (t)
-                        Toast.makeText(LoginActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
-                    else
-                        Toast.makeText(LoginActivity.this, "Data Not Inserted", Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-            try {
-                List<UserLocation> list = null;
-                String travelDate ;
-                travelDate =  "2020"+"-"+"02"+"-"+"25";
-                Date tDate = new Travel.DateConverter().fromTimestamp(travelDate);
-                if (tDate == null)
-                    throw new Exception("שגיאה בתאריך");
-
-                HashMap<String, Boolean> company =new HashMap<String, Boolean>();
-                company.put("Afikim",Boolean.FALSE);
-                company.put("SuperBus",Boolean.FALSE);
-                company.put("SmartBus",Boolean.FALSE);
-                company.put("SmartBus",Boolean.TRUE);
-
-                Travel travel1 = new Travel("Yossi","026456677","Yossi05489@gmail.com",tDate,tDate,5,
-                        new UserLocation(10.0, 20.0),list ,true,company);
-
-                travel1.setClientName("ayala");
-                loginViewModel.updateTravel(travel1);
-
-//                Travel travel2 = new Travel();
-//                travel2.setClientName("Ronit");
-//                travel2.setClientPhone("026334512");
-//                travel2.setClientEmail("RonitMarxs@gmail.com");
-//                travel2.setPickupAddress(new UserLocation(15.0, 25.0));
-//                travel2.setTravelDate(tDate);
-//                travel2.setArrivalDate(tDate);
-//                travel2.setRequestType(Travel.RequestType.sent);
-//                travel2.setCompany(new HashMap<String, Boolean>());
-//                travel2.getCompany().put("Egged",Boolean.FALSE);
-//                travel2.getCompany().put("TsirTour",Boolean.FALSE);
 //
-//                loginViewModel.addTravel(travel2);
-
-
-
-            } catch (Exception e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
+//            try {
+//                List<UserLocation> list = null;
+//                String travelDate ;
+//                travelDate =  "2020"+"-"+"02"+"-"+"25";
+//                Date tDate = new Travel.DateConverter().fromTimestamp(travelDate);
+//                if (tDate == null)
+//                    throw new Exception("שגיאה בתאריך");
+//
+//                HashMap<String, Boolean> company =new HashMap<String, Boolean>();
+//                company.put("Afikim",Boolean.FALSE);
+//                company.put("SuperBus",Boolean.FALSE);
+//                company.put("SmartBus",Boolean.FALSE);
+//                company.put("SmartBus",Boolean.TRUE);
+//
+//                Travel travel1 = new Travel("Yossi","026456677","Yossi05489@gmail.com",tDate,tDate,5,
+//                        new UserLocation(10.0, 20.0),list ,true,company);
+//
+//                travel1.setClientName("ayala");
+//                loginViewModel.updateTravel(travel1);
+//
+////                Travel travel2 = new Travel();
+////                travel2.setClientName("Ronit");
+////                travel2.setClientPhone("026334512");
+////                travel2.setClientEmail("RonitMarxs@gmail.com");
+////                travel2.setPickupAddress(new UserLocation(15.0, 25.0));
+////                travel2.setTravelDate(tDate);
+////                travel2.setArrivalDate(tDate);
+////                travel2.setRequestType(Travel.RequestType.sent);
+////                travel2.setCompany(new HashMap<String, Boolean>());
+////                travel2.getCompany().put("Egged",Boolean.FALSE);
+////                travel2.getCompany().put("TsirTour",Boolean.FALSE);
+////
+////                loginViewModel.addTravel(travel2);
+//
+//
+//
+//            } catch (Exception e) {
+//                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        }
 
         @Override
         public void onClick(View v) {
@@ -214,9 +171,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         });
         }
          private void goToNavigationDrawer(String email){
-             Intent i = new Intent(this,NavigationDrawer.class );
+             Intent i = new Intent(this, NavigationDrawer.class );
              i.putExtra("email",email);
              startActivity(i);
+
          }
         private void newAccount() {
             Log.d("MainActivity", "signUp");

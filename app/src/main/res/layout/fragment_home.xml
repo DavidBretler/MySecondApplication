@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Fragments.Registered_Travels.RegisteredTravels">
+    tools:context=".UI.Fragments.RegisteredTravels">
 
     <TextView
         android:id="@+id/text_home"
@@ -18,5 +18,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="RegisteredTravels"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,7 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.MySecondApplication">
         <activity
-            android:name=".UI.NavigationDrawer"
+            android:name=".UI.NavigationDrawer.NavigationDrawer"
             android:label="@string/title_activity_navigation_drawer"
             android:theme="@style/Theme.MySecondApplication.NoActionBar"></activity>
         <activity android:name=".UI.Login_Activity.LoginActivity">
