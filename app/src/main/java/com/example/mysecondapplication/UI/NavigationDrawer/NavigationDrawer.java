@@ -139,8 +139,10 @@ public class NavigationDrawer extends AppCompatActivity {
                 Travel travel1 = new Travel("Yossi","026456677","Yossi05489@gmail.com",tDate,tDate,5,
                         new UserLocation(10.0, 20.0),list ,true,company);
 
+                navigationDrawerVM.addTravel(travel1);
+
                 travel1.setClientName("ayala");
-               navigationDrawerVM.updateTravel(travel1);
+                navigationDrawerVM.updateTravel(travel1);
 
 //                Travel travel2 = new Travel();
 //                travel2.setClientName("Ronit");

@@ -33,7 +33,7 @@ public class NavigationDrawerVM extends AndroidViewModel {
     public LiveData<String> getText() {
         return mText;
     }
-    void addTravel(Travel travel)
+    public void addTravel(Travel travel)
     {
         repository.addTravel(travel);
     }
