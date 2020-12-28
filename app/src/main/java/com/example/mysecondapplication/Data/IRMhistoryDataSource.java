@@ -1,5 +1,7 @@
 package com.example.mysecondapplication.Data;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.mysecondapplication.Entities.Travel;
 
 import java.util.List;
@@ -14,4 +16,5 @@ public interface IRMhistoryDataSource {
     public void deleteTravel(Travel p);
 
     public void clearTable();
+    public LiveData<List<Travel>> getTravels();
 }

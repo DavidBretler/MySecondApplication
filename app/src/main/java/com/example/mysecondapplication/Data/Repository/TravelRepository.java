@@ -15,9 +15,12 @@ import java.util.List;
 public class TravelRepository implements ITravelRepository {
     IFBtravelDataSource iFBtravelDataSource;
     private IRMhistoryDataSource iRMhistoryDataSource;
+    private MutableLiveData<List<Travel>> openTravels = new MutableLiveData<>();
+    private MutableLiveData<List<Travel>> UserTravels = new MutableLiveData<>();
+    private MutableLiveData<List<Travel>> HistoryTravels = new  MutableLiveData<>();
 
 
-    private MutableLiveData<List<Travel>> mutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Travel>> AllTravels = new MutableLiveData<>();
 
 
 
@@ -36,7 +39,7 @@ public class TravelRepository implements ITravelRepository {
             @Override
             public void onTravelsChanged() {
                 List<Travel> travelList = iFBtravelDataSource.getAllTravels();
-                mutableLiveData.setValue(travelList);
+                AllTravels.setValue(travelList);
 
                 iRMhistoryDataSource.clearTable();
                 iRMhistoryDataSource.addTravel(travelList);
@@ -59,7 +62,24 @@ public class TravelRepository implements ITravelRepository {
 
     @Override
     public MutableLiveData<List<Travel>> getAllTravels() {
-        return mutableLiveData;
+        return AllTravels;
+    }
+
+    @Override
+    public MutableLiveData<List<Travel>> getUserTravels()
+    {
+        return UserTravels;
+    }
+
+    @Override
+    public MutableLiveData<List<Travel>> getOpenTravels() {
+        return openTravels;
+    }
+    @Override
+    public MutableLiveData<List<Travel>> getHistoryTravels() {
+//        List<Travel> travelList =iRMhistoryDataSource.getTravels();
+//        HistoryTravels.setValue(travelList);
+        return HistoryTravels;
     }
 
     @Override

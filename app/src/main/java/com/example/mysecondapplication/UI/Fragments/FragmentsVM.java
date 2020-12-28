@@ -14,11 +14,11 @@ import com.example.mysecondapplication.Entities.Travel;
 
 import java.util.List;
 
-public class NavigationDrawerVM extends AndroidViewModel {
+public class FragmentsVM extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
     ITravelRepository repository;
-    public NavigationDrawerVM(Application p) {
+    public FragmentsVM(Application p) {
 
         super(p);
         mText = new MutableLiveData<>();
@@ -42,9 +42,17 @@ public class NavigationDrawerVM extends AndroidViewModel {
         repository.updateTravel(travel);
     }
 
-    public MutableLiveData<List<Travel>> getAllTravels()
+    public MutableLiveData<List<Travel>> getOpenTravels()
     {
-        return (MutableLiveData<List<Travel>>)repository.getAllTravels();
+        return (MutableLiveData<List<Travel>>) repository.getOpenTravels();
+    }
+    public MutableLiveData<List<Travel>> getUserTravels()
+    {
+        return (MutableLiveData<List<Travel>>) repository.getOpenTravels();
+    }
+    public MutableLiveData<List<Travel>> gethistoryTravels()
+    {
+        return (MutableLiveData<List<Travel>>) repository.getOpenTravels();
     }
     public MutableLiveData<Boolean> getIsSuccess()
     {

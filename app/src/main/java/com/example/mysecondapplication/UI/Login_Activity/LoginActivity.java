@@ -19,12 +19,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.TypeConverter;
 
+import com.example.mysecondapplication.Entities.Travel;
+import com.example.mysecondapplication.Entities.UserLocation;
 import com.example.mysecondapplication.R;
 import com.example.mysecondapplication.UI.NavigationDrawer.NavigationDrawer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
         public FirebaseAuth mAuth;
@@ -73,50 +81,76 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Btn_use_last_user_details.setOnClickListener(this);
             Btn_verify_email.setVisibility(View.GONE);
 
-  //          checkData();
-        }
+        List<UserLocation> list = new LinkedList<UserLocation>();
+        list.add( new UserLocation(20.0, 20.0));
 
-//
-//            try {
-//                List<UserLocation> list = null;
-//                String travelDate ;
-//                travelDate =  "2020"+"-"+"02"+"-"+"25";
-//                Date tDate = new Travel.DateConverter().fromTimestamp(travelDate);
-//                if (tDate == null)
-//                    throw new Exception("שגיאה בתאריך");
-//
-//                HashMap<String, Boolean> company =new HashMap<String, Boolean>();
-//                company.put("Afikim",Boolean.FALSE);
-//                company.put("SuperBus",Boolean.FALSE);
-//                company.put("SmartBus",Boolean.FALSE);
-//                company.put("SmartBus",Boolean.TRUE);
-//
-//                Travel travel1 = new Travel("Yossi","026456677","Yossi05489@gmail.com",tDate,tDate,5,
-//                        new UserLocation(10.0, 20.0),list ,true,company);
-//
-//                travel1.setClientName("ayala");
-//                loginViewModel.updateTravel(travel1);
-//
-////                Travel travel2 = new Travel();
-////                travel2.setClientName("Ronit");
-////                travel2.setClientPhone("026334512");
-////                travel2.setClientEmail("RonitMarxs@gmail.com");
-////                travel2.setPickupAddress(new UserLocation(15.0, 25.0));
-////                travel2.setTravelDate(tDate);
-////                travel2.setArrivalDate(tDate);
-////                travel2.setRequestType(Travel.RequestType.sent);
-////                travel2.setCompany(new HashMap<String, Boolean>());
-////                travel2.getCompany().put("Egged",Boolean.FALSE);
-////                travel2.getCompany().put("TsirTour",Boolean.FALSE);
-////
-////                loginViewModel.addTravel(travel2);
-//
-//
-//
-//            } catch (Exception e) {
-//                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        }
+        HashMap<String, Boolean> company =new HashMap<String, Boolean>();
+        company.put("Afikim",Boolean.FALSE);
+        company.put("SuperBus",Boolean.FALSE);
+        company.put("SmartBus",Boolean.FALSE);
+        company.put("SmartBus",Boolean.TRUE);
+
+
+        String str = asString(company);
+        company =fromString(str);
+         str = ListToString(list);;
+        list = StringToList(str);
+    }
+
+    Travel.UserLocationConverter userLocationConverter;
+
+    public String ListToString(List<UserLocation> list) {
+        userLocationConverter =new  Travel.UserLocationConverter();
+        if (list == null )
+            return null;
+        StringBuilder listString = new StringBuilder();
+
+        for (UserLocation loc : list) {
+          String str=userLocationConverter.asString(loc);
+            listString.append(userLocationConverter.asString(loc)).append(",");
+
+        }
+        return listString.toString() ;
+    }
+    public List<UserLocation> StringToList(String value) {
+        if (value == null || value.isEmpty())
+            return null;
+        String[] listString = value.split(","); //split list into array of strings
+        List<UserLocation> list = new LinkedList<UserLocation>();
+
+        for (String s1 : listString) //for all (string,boolean) in the map string
+            if (!s1.isEmpty()) //is empty maybe will needed because the last char in the string is ","
+                list.add(userLocationConverter.fromString(s1)); //user location
+
+        return list;
+    }
+
+    public HashMap<String, Boolean> fromString(String value) {
+        if (value == null || value.isEmpty())
+            return null;
+        String[] mapString = value.split(","); //split map into array of (string,boolean) strings
+        HashMap<String, Boolean> hashMap = new HashMap<>();
+        for (String s1 : mapString) //for all (string,boolean) in the map string
+        {
+            if (!s1.isEmpty()) {//is empty maybe will needed because the last char in the string is ","
+                String[] s2 = s1.split(":"); //split (string,boolean) to company string and boolean string.
+                Boolean aBoolean = Boolean.parseBoolean(s2[1]);
+                hashMap.put(/*company string:*/s2[0], aBoolean);
+            }
+        }
+        return hashMap;
+    }
+
+
+    public String asString(HashMap<String, Boolean> map) {
+        if (map == null)
+            return null;
+        StringBuilder mapString = new StringBuilder();
+        for (Map.Entry<String, Boolean> entry : map.entrySet())
+            mapString.append(entry.getKey()).append(":").append(entry.getValue()).append(",");
+        return mapString.toString();
+    }
+
 
         @Override
         public void onClick(View v) {

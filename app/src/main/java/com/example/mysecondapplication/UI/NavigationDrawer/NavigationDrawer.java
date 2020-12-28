@@ -11,11 +11,10 @@ import android.view.Menu;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.Entities.UserLocation;
 import com.example.mysecondapplication.R;
-import com.example.mysecondapplication.UI.Fragments.NavigationDrawerVM;
+import com.example.mysecondapplication.UI.Fragments.FragmentsVM;
 import com.example.mysecondapplication.UI.Login_Activity.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -31,6 +30,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,14 +43,14 @@ public class NavigationDrawer extends AppCompatActivity {
     public TextView Txt_welcomeUser;
     private String email="";
     public FirebaseAuth mAuth;
-    private NavigationDrawerVM navigationDrawerVM;
+    private FragmentsVM fragmentsVM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_drawer);
 
-        navigationDrawerVM = new ViewModelProvider(this).get(NavigationDrawerVM.class);
+        fragmentsVM = new ViewModelProvider(this).get(FragmentsVM.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,7 +72,7 @@ public class NavigationDrawer extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_RegisteredTravels, R.id.nav_CompanyTravels, R.id.nav_History_Travels)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -84,7 +84,6 @@ public class NavigationDrawer extends AppCompatActivity {
         if (extras != null)
              email = extras.getString("email");
              email=email.split("@")[0];
-       // toolbar.setTitle("welcome user: "+email);
          Txt_welcomeUser= findViewById(R.id.textView3);
          Txt_welcomeUser.setText("welcome user: " +email);
 
@@ -93,8 +92,8 @@ public class NavigationDrawer extends AppCompatActivity {
 
     public void checkdate () {
 
-        navigationDrawerVM = new ViewModelProvider(this).get(NavigationDrawerVM.class);
-        navigationDrawerVM.getAllTravels().observe(this, new Observer<List<Travel>>() {
+        fragmentsVM = new ViewModelProvider(this).get(FragmentsVM.class);
+        fragmentsVM.getOpenTravels().observe(this, new Observer<List<Travel>>() {
             @Override
             public void onChanged(List<Travel> travels) {
                 for (Travel tmp : travels) {
@@ -111,7 +110,7 @@ public class NavigationDrawer extends AppCompatActivity {
             }
         });
 
-        navigationDrawerVM.getIsSuccess().observe(this, new Observer<Boolean>() {
+        fragmentsVM.getIsSuccess().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean t) {
                 if (t)
@@ -123,7 +122,8 @@ public class NavigationDrawer extends AppCompatActivity {
         });
 
         try {
-                List<UserLocation> list = null;
+                List<UserLocation> list = new ArrayList<UserLocation>();
+                list.add( new UserLocation(20.0, 20.0));
                 String travelDate ;
                 travelDate =  "2020"+"-"+"02"+"-"+"25";
                 Date tDate = new Travel.DateConverter().fromTimestamp(travelDate);
@@ -139,10 +139,10 @@ public class NavigationDrawer extends AppCompatActivity {
                 Travel travel1 = new Travel("Yossi","026456677","Yossi05489@gmail.com",tDate,tDate,5,
                         new UserLocation(10.0, 20.0),list ,true,company);
 
-                navigationDrawerVM.addTravel(travel1);
+                fragmentsVM.addTravel(travel1);
 
-                travel1.setClientName("ayala");
-                navigationDrawerVM.updateTravel(travel1);
+//                travel1.setClientName("ayala");
+//                navigationDrawerVM.updateTravel(travel1);
 
 //                Travel travel2 = new Travel();
 //                travel2.setClientName("Ronit");

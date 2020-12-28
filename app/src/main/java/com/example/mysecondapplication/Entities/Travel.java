@@ -11,13 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Application;
-import android.location.Geocoder;
-import android.location.Location;
-import android.widget.Toast;
 
 
 @Entity (tableName = "travels")
@@ -34,9 +32,11 @@ public class Travel {
     private int   numOfPassenger;
     @TypeConverters(UserLocationConverter.class)
     private UserLocation pickupAddress;
+
     // TODO: 22/12/2020 how to convert to insert room
 //    @TypeConverters(ListuserlocConverter.class)
 //    private List<UserLocation> destAddressList ;
+
     @TypeConverters(RequestType.class)
     private RequestType requestType=RequestType.sent;
     @TypeConverters(DateConverter.class)
@@ -71,7 +71,7 @@ public class Travel {
 
     public UserLocation getPickupAddress() { return this.pickupAddress; }
 
-    // public List<UserLocation> getDestAddressList() { return this.destAddressList; }
+  //   public List<UserLocation> getDestAddressList() { return this.destAddressList; }
 
     public boolean isVIPBUS() { return this.VIPBUS; }
 
@@ -88,7 +88,7 @@ public class Travel {
 
     public void setPickupAddress(UserLocation pickupAddress) { this.pickupAddress = pickupAddress; }
 
-   // public void setDestAddressList(List<UserLocation> destAddressList) { this.destAddressList = destAddressList; }
+ //   public void setDestAddressList(List<UserLocation> destAddressList) { this.destAddressList = destAddressList; }
 
     public void setRequestType(RequestType requesType) { this.requestType = requesType; }
 
@@ -101,7 +101,7 @@ public class Travel {
     public void setCompany(HashMap<String, Boolean> company) { this.company = company; }
 
     public Travel(String clientName, String clientPhone, String clientEmail, Date departingDate, Date returnDate
-            ,int numOfPassenger,UserLocation  pickupAddress , List<UserLocation> destAddress,boolean VIPBUS, HashMap<String, Boolean> company) {
+            ,int numOfPassenger,UserLocation  pickupAddress , List<UserLocation> destAddressList,boolean VIPBUS, HashMap<String, Boolean> company) {
         this.clientName = clientName;
         this.clientPhone = clientPhone;
         this.clientEmail = clientEmail;
@@ -109,7 +109,7 @@ public class Travel {
         this.arrivalDate = returnDate;
         this.numOfPassenger=numOfPassenger;
         this.pickupAddress=pickupAddress;
-   //     this.destAddressList = new ArrayList<>(destAddress);
+  //      this.destAddressList = destAddressList;
         this.VIPBUS=VIPBUS;
         this.company = company;
     }
@@ -184,6 +184,37 @@ public class Travel {
         }
     }
 
+    public static class ListuserlocConverter {
+        UserLocationConverter userLocationConverter;
+        @TypeConverter
+        public String ListToString(List<UserLocation> list) {
+            userLocationConverter =new  Travel.UserLocationConverter();
+            if (list == null )
+                return null;
+            StringBuilder listString = new StringBuilder();
+
+            for (UserLocation loc : list) {
+                listString.append(userLocationConverter.asString(loc)).append(",");
+            }
+            return listString.toString() ;
+        }
+
+        @TypeConverter
+        public List<UserLocation> StringToList(String value) {
+            if (value == null || value.isEmpty())
+                return null;
+            String[] listString = value.split(","); //split list into array of strings
+            List<UserLocation> list = new ArrayList<UserLocation>();
+
+            for (String s1 : listString) //for all (string,boolean) in the map string
+                if (!s1.isEmpty()) //is empty maybe will needed because the last char in the string is ","
+                    list.add(userLocationConverter.fromString(s1)); //user location
+
+            return list;
+        }
+
+    }
+
     public static class UserLocationConverter extends Application {
 
         @TypeConverter
@@ -202,21 +233,5 @@ public class Travel {
 
 
     }
-    public static class ListuserlocConverter {
 
-        @TypeConverter
-        public String asString(UserLocation warehouseUserLocation) {
-            return warehouseUserLocation == null ? "" : warehouseUserLocation.getLat() + " " + warehouseUserLocation.getLon();
-        }
-            @TypeConverter
-        public List<String> ListAsString(List<UserLocation> list) {
-            List<String> StringList = new ArrayList<String>();
-            String str = "";
-            for (UserLocation loc : list)
-                str = asString(loc);
-            StringList.add(str);
-
-            return StringList;
-        }
-    }
 }
