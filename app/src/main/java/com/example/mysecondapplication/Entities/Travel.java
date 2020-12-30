@@ -101,7 +101,7 @@ public class Travel {
     public void setCompany(HashMap<String, Boolean> company) { this.company = company; }
 
     public Travel(String clientName, String clientPhone, String clientEmail, Date departingDate, Date returnDate
-            ,int numOfPassenger,UserLocation  pickupAddress , List<UserLocation> destAddressList,boolean VIPBUS, HashMap<String, Boolean> company) {
+            ,int numOfPassenger,UserLocation  pickupAddress , List<UserLocation> destAddressList,RequestType requestType,boolean VIPBUS, HashMap<String, Boolean> company) {
         this.clientName = clientName;
         this.clientPhone = clientPhone;
         this.clientEmail = clientEmail;
@@ -110,6 +110,7 @@ public class Travel {
         this.numOfPassenger=numOfPassenger;
         this.pickupAddress=pickupAddress;
   //      this.destAddressList = destAddressList;
+        this.requestType=requestType;
         this.VIPBUS=VIPBUS;
         this.company = company;
     }
@@ -132,7 +133,7 @@ public class Travel {
 
 
     public enum RequestType {
-        sent(0), accepted(1), run(2), close(3);
+        sent(0), accepted(1), run(2), close(3),payed(4);
         private final Integer code;
         RequestType(Integer value) {
             this.code = value;

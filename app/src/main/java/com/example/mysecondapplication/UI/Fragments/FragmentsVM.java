@@ -48,11 +48,11 @@ public class FragmentsVM extends AndroidViewModel {
     }
     public MutableLiveData<List<Travel>> getUserTravels()
     {
-        return (MutableLiveData<List<Travel>>) repository.getOpenTravels();
+        return (MutableLiveData<List<Travel>>) repository.getUserTravels();
     }
     public MutableLiveData<List<Travel>> gethistoryTravels()
     {
-        return (MutableLiveData<List<Travel>>) repository.getOpenTravels();
+        return (MutableLiveData<List<Travel>>) repository.getHistoryTravels();
     }
     public MutableLiveData<Boolean> getIsSuccess()
     {

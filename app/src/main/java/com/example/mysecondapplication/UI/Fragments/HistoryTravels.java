@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -24,6 +25,8 @@ import java.util.List;
 public class HistoryTravels extends Fragment {
     public FirebaseAuth mAuth;
     private FragmentsVM fragmentsVM;
+    ListView listView;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +37,8 @@ public class HistoryTravels extends Fragment {
             checkOwner(user.getEmail());
 
         final TextView textView = root.findViewById(R.id.text_slideshow);
+        listView = (ListView) root.findViewById(R.id.list_travel_history);
+
         fragmentsVM.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -44,7 +49,7 @@ public class HistoryTravels extends Fragment {
         fragmentsVM.gethistoryTravels().observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
             @Override
             public void onChanged(List<Travel> travels) {
-                Toast.makeText(getActivity(), "name is :"+travels.get(0).getClientName(),
+                Toast.makeText(getActivity(), "size is :"+travels.size(),
                         Toast.LENGTH_SHORT).show();
             }
         });

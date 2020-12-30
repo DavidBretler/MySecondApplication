@@ -135,9 +135,10 @@ public class NavigationDrawer extends AppCompatActivity {
                 company.put("SuperBus",Boolean.FALSE);
                 company.put("SmartBus",Boolean.FALSE);
                 company.put("SmartBus",Boolean.TRUE);
+                Travel.RequestType requestType= Travel.RequestType.sent;
 
-                Travel travel1 = new Travel("Yossi","026456677","Yossi05489@gmail.com",tDate,tDate,5,
-                        new UserLocation(10.0, 20.0),list ,true,company);
+                Travel travel1 = new Travel("rabi","026456677","ddkill8@gmail.com",tDate,tDate,5,
+                        new UserLocation(10.0, 20.0),list ,requestType,true,company);
 
                 fragmentsVM.addTravel(travel1);
 
