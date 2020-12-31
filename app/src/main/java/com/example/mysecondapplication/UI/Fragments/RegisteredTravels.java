@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,40 +24,47 @@ import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.R;
 import com.example.mysecondapplication.UI.MyListAdapter;
 
+import java.util.LinkedList;
 import java.util.List;
 
 
 public class RegisteredTravels extends Fragment {
 
+
     private FragmentsVM fragmentsVM;
     MyListAdapter adapter;
     RecyclerView recyclerView;
     Spinner spinner;
-    Context context =this.getActivity();
+    Context context;
+    Button button;
+    public List<Travel> Travels;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         fragmentsVM =
                 new ViewModelProvider(this).get(FragmentsVM.class);
         View root = inflater.inflate(R.layout.fragment_registered_travels, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
 
+        button=(Button) root.findViewById(R.id.Btn_changeToRun);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(v.getContext(),"click on buttune: ",Toast.LENGTH_LONG).show();
+//            }
+//        });{
 
+ //       }
+        context =RegisteredTravels.this.getActivity().getBaseContext();
         recyclerView = (RecyclerView) root.findViewById(R.id.user_travel_recyclerView);
         DividerItemDecoration itemDecor = new DividerItemDecoration(RegisteredTravels.this.getActivity(),1);
         recyclerView.addItemDecoration(itemDecor);
 
 
         spinner= (Spinner) root.findViewById(R.id.spinner);
-        fragmentsVM.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
 
         fragmentsVM.getUserTravels().observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
             @Override
             public void onChanged(List<Travel> travels) {
+                Travels=new LinkedList<>(travels);
 
                 Travel[] travelsArr = new Travel[travels.size()];
                 travels.toArray(travelsArr);

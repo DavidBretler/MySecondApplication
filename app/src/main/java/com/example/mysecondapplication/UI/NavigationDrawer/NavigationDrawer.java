@@ -15,6 +15,7 @@ import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.Entities.UserLocation;
 import com.example.mysecondapplication.R;
 import com.example.mysecondapplication.UI.Fragments.FragmentsVM;
+import com.example.mysecondapplication.UI.Fragments.RegisteredTravels;
 import com.example.mysecondapplication.UI.Login_Activity.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -44,7 +45,7 @@ public class NavigationDrawer extends AppCompatActivity {
     private String email="";
     public FirebaseAuth mAuth;
     private FragmentsVM fragmentsVM;
-
+    RegisteredTravels registeredTravels;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +67,7 @@ public class NavigationDrawer extends AppCompatActivity {
         });
 
 
-
+         registeredTravels =new RegisteredTravels();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -85,7 +86,7 @@ public class NavigationDrawer extends AppCompatActivity {
              email = extras.getString("email");
              email=email.split("@")[0];
          Txt_welcomeUser= findViewById(R.id.Txt_welcome_user);
-         Txt_welcomeUser.setText("welcome user: " +email);
+         Txt_welcomeUser.setText("welcome user: " + email);
 
        checkdate();
     }
@@ -148,16 +149,17 @@ public class NavigationDrawer extends AppCompatActivity {
                 travel2.setClientName("Ronit");
                 travel2.setClientPhone("026334512");
                 travel2.setClientEmail("ddkill8@gmail.com");
-                travel2.setPickupAddress(new UserLocation(15.0, 25.0));
+                travel2.setPickupAddress(new UserLocation(	38.89560181521182, -77.0328762512747));
+             //   travel2.setDetentionAddress(new UserLocation(15.0, 25.0));
                 travel2.setTravelDate(tDate);
                 travel2.setArrivalDate(tDate);
-                travel2.setRequestType(Travel.RequestType.sent);
+                travel2.setRequestType(Travel.RequestType.close);
                 travel2.setCompany(new HashMap<String, Boolean>());
                 travel2.getCompany().put("Egged",Boolean.FALSE);
                 travel2.getCompany().put("TsirTour",Boolean.FALSE);
                 travel2.setVIPBUS(true);
 
-               fragmentsVM.addTravel(travel2);
+    //           fragmentsVM.addTravel(travel2);
 
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();

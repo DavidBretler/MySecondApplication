@@ -87,10 +87,10 @@ public class TravelRepository implements ITravelRepository {
 //        Transformations.
        List<Travel> historyTravelList=new  LinkedList<Travel>();
         for (Travel t : travelList)
-        if(t.getRequestType().toString().equals("close")||t.getRequestType().toString().equals("payed"))
+        if(t.getRequestType().toString().equals("close"))
             historyTravelList.add(t);
-//
-//        HistoryTravels.setValue(historyTravelList);
+
+      HistoryTravels.setValue(historyTravelList);
     }
     @Override
     public void addTravel(Travel travel) {

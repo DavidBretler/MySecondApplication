@@ -1,121 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<!--    <TextView-->
-<!--        android:id="@+id/Txt_numPassenger"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:textSize="8sp" />-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/Txt_ArrivalDate"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:textSize="8sp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/Txt_TravelDate"-->
-<!--        android:layout_width="55dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:textSize="8sp" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/Btn_changeToRun"-->
-<!--        android:layout_width="55dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:textSize="8sp" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/Btn_changeToClose"-->
-<!--        android:layout_width="57dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:textSize="8sp" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/Btn_approveCompany"-->
-<!--        android:layout_width="70dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:textSize="8sp" />-->
-
-    <!--    <androidx.appcompat.widget.AppCompatSpinner-->
-    <!--        android:id="@+id/spinnerCompany"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:gravity="center_vertical"-->
-    <!--        android:textSize="8sp"/>-->
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/relativeLayout"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/listPreferredItemHeightLarge"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+      >
 
     <TextView
         android:id="@+id/Txt_ArrivalDate"
         android:layout_width="wrap_content"
-        android:layout_height="39dp"
-        android:text="TextView" />
+        android:layout_height="27dp"
+        android:text="TextView"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/Txt_TravelDate"
         android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="100dp"
-        android:text="TextView" />
+        android:layout_height="27dp"
+        android:layout_marginTop="30dp"
+        android:text="TextView"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/Txt_numPassenger"
         android:layout_width="wrap_content"
-        android:layout_height="39dp"
-        android:layout_marginStart="180dp"
-        android:layout_marginLeft="210dp"
-        android:text="TextView" />
+        android:layout_height="27dp"
+        android:layout_marginTop="60dp"
+        android:text="TextView"
+        android:textStyle="bold" />
 
 
     <Button
         android:id="@+id/Btn_changeToRun"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:text="change to Run"
-        android:textSize="6dp" />
+        android:layout_height="60dp"
+        android:layout_marginTop="100dp"
+        android:text="change\n to Run"
+        android:textSize="8dp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/Btn_changeToClose"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="40dp"
-        android:textSize="6dp"
-        android:text="change to close" />
+        android:layout_marginTop="100dp"
+        android:text="change\n to close"
+        android:textSize="8dp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/Btn_approveCompany"
         android:layout_width="wrap_content"
-        android:layout_height="62dp"
+        android:layout_height="60dp"
         android:layout_marginStart="200dp"
         android:layout_marginLeft="200dp"
-        android:layout_marginTop="40dp"
-        android:text="approve Company"
-        android:textSize="6dp" />
+        android:layout_marginTop="100dp"
+        android:text="approve\n Company"
+        android:textSize="8dp"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="match_parent"
+        android:layout_width="133dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="310dp"
-        android:layout_marginLeft="310dp"
-        android:layout_marginTop="10dp"
-        />
+        android:layout_marginStart="250dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="50dp"
+        android:text="choose company:"
+        android:textColor="#1E3091"
+        android:textColorHighlight="#091973"
+        android:textStyle="bold" />
 </RelativeLayout>
 
 

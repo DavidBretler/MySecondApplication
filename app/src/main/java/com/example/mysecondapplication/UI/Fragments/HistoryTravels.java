@@ -25,7 +25,7 @@ import java.util.List;
 public class HistoryTravels extends Fragment {
     public FirebaseAuth mAuth;
     private FragmentsVM fragmentsVM;
-    ListView listView;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -37,7 +37,6 @@ public class HistoryTravels extends Fragment {
             checkOwner(user.getEmail());
 
         final TextView textView = root.findViewById(R.id.text_slideshow);
-        listView = (ListView) root.findViewById(R.id.list_travel_history);
 
         fragmentsVM.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

@@ -32,8 +32,18 @@ public class Travel {
     private int   numOfPassenger;
     @TypeConverters(UserLocationConverter.class)
     private UserLocation pickupAddress;
+
 //    @TypeConverters(UserLocationConverter.class)
 //    private UserLocation detentionAddress;
+//
+//    public UserLocation getDetentionAddress() {
+//        return detentionAddress;
+//    }
+//
+//    public void setDetentionAddress(UserLocation detentionAddress) {
+//        this.detentionAddress = detentionAddress;
+//    }
+
     @TypeConverters(RequestType.class)
     private RequestType requestType=RequestType.sent;
     @TypeConverters(DateConverter.class)
@@ -106,7 +116,7 @@ public class Travel {
         this.arrivalDate = returnDate;
         this.numOfPassenger=numOfPassenger;
         this.pickupAddress=pickupAddress;
-   //     this.detentionAddress = destAddress;
+  //      this.detentionAddress = destAddress;
         this.requestType=requestType;
         this.VIPBUS=VIPBUS;
         this.company = company;
