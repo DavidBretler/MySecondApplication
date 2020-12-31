@@ -1,9 +1,12 @@
 package com.example.mysecondapplication.UI.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +31,8 @@ public class RegisteredTravels extends Fragment {
     private FragmentsVM fragmentsVM;
     MyListAdapter adapter;
     RecyclerView recyclerView;
+    Spinner spinner;
+    Context context =this.getActivity();
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         fragmentsVM =
@@ -36,14 +42,11 @@ public class RegisteredTravels extends Fragment {
 
 
         recyclerView = (RecyclerView) root.findViewById(R.id.user_travel_recyclerView);
-
-//        MyListData[] myListData = new MyListData[] {
-//                new MyListData("Email")
-//
-//        };
+        DividerItemDecoration itemDecor = new DividerItemDecoration(RegisteredTravels.this.getActivity(),1);
+        recyclerView.addItemDecoration(itemDecor);
 
 
-
+        spinner= (Spinner) root.findViewById(R.id.spinner);
         fragmentsVM.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -57,12 +60,12 @@ public class RegisteredTravels extends Fragment {
 
                 Travel[] travelsArr = new Travel[travels.size()];
                 travels.toArray(travelsArr);
-                adapter = new MyListAdapter((travelsArr));
+                adapter = new MyListAdapter(travelsArr, context);
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(RegisteredTravels.this.getActivity()));
                 recyclerView.setAdapter(adapter);
-                Toast.makeText(getActivity(), "name is :"+travels.get(0).getClientName(),
-                        Toast.LENGTH_SHORT).show();
+
+
             }
         });
 

@@ -32,11 +32,8 @@ public class Travel {
     private int   numOfPassenger;
     @TypeConverters(UserLocationConverter.class)
     private UserLocation pickupAddress;
-
-    // TODO: 22/12/2020 how to convert to insert room
-//    @TypeConverters(ListuserlocConverter.class)
-//    private List<UserLocation> destAddressList ;
-
+//    @TypeConverters(UserLocationConverter.class)
+//    private UserLocation detentionAddress;
     @TypeConverters(RequestType.class)
     private RequestType requestType=RequestType.sent;
     @TypeConverters(DateConverter.class)
@@ -71,7 +68,7 @@ public class Travel {
 
     public UserLocation getPickupAddress() { return this.pickupAddress; }
 
-  //   public List<UserLocation> getDestAddressList() { return this.destAddressList; }
+ //   public UserLocation getDetentionAddress() { return detentionAddress; }
 
     public boolean isVIPBUS() { return this.VIPBUS; }
 
@@ -88,7 +85,7 @@ public class Travel {
 
     public void setPickupAddress(UserLocation pickupAddress) { this.pickupAddress = pickupAddress; }
 
- //   public void setDestAddressList(List<UserLocation> destAddressList) { this.destAddressList = destAddressList; }
+  //  public void setDetentionAddress(UserLocation detentionAddress) { this.detentionAddress = detentionAddress; }
 
     public void setRequestType(RequestType requesType) { this.requestType = requesType; }
 
@@ -101,7 +98,7 @@ public class Travel {
     public void setCompany(HashMap<String, Boolean> company) { this.company = company; }
 
     public Travel(String clientName, String clientPhone, String clientEmail, Date departingDate, Date returnDate
-            ,int numOfPassenger,UserLocation  pickupAddress , List<UserLocation> destAddressList,RequestType requestType,boolean VIPBUS, HashMap<String, Boolean> company) {
+            ,int numOfPassenger,UserLocation  pickupAddress , UserLocation destAddress,RequestType requestType,boolean VIPBUS, HashMap<String, Boolean> company) {
         this.clientName = clientName;
         this.clientPhone = clientPhone;
         this.clientEmail = clientEmail;
@@ -109,13 +106,14 @@ public class Travel {
         this.arrivalDate = returnDate;
         this.numOfPassenger=numOfPassenger;
         this.pickupAddress=pickupAddress;
-  //      this.destAddressList = destAddressList;
+   //     this.detentionAddress = destAddress;
         this.requestType=requestType;
         this.VIPBUS=VIPBUS;
         this.company = company;
     }
 
     public  Travel(){}
+
 
     public static class DateConverter {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -184,33 +182,37 @@ public class Travel {
             return mapString.toString();
         }
     }
-
+//
     public static class ListuserlocConverter {
-        UserLocationConverter userLocationConverter;
+//        UserLocationConverter userLocationConverter;
         @TypeConverter
         public String ListToString(List<UserLocation> list) {
-            userLocationConverter =new  Travel.UserLocationConverter();
-            if (list == null )
-                return null;
-            StringBuilder listString = new StringBuilder();
-
-            for (UserLocation loc : list) {
-                listString.append(userLocationConverter.asString(loc)).append(",");
-            }
-            return listString.toString() ;
+//            userLocationConverter =new  Travel.UserLocationConverter();
+//            if (list == null )
+//                return null;
+//            StringBuilder listString = new StringBuilder();
+//
+//            for (UserLocation loc : list) {
+//                listString.append(userLocationConverter.asString(loc)).append(",");
+//            }
+//            return listString.toString() ;
+            return "kuku";
         }
 
         @TypeConverter
         public List<UserLocation> StringToList(String value) {
-            if (value == null || value.isEmpty())
-                return null;
-            String[] listString = value.split(","); //split list into array of strings
+//            if (value == null || value.isEmpty())
+//                return null;
+//            String[] listString = value.split(","); //split list into array of strings
             List<UserLocation> list = new ArrayList<UserLocation>();
+            list.add(new UserLocation(10,20));
 
-            for (String s1 : listString) //for all (string,boolean) in the map string
-                if (!s1.isEmpty()) //is empty maybe will needed because the last char in the string is ","
-                    list.add(userLocationConverter.fromString(s1)); //user location
-
+//            for (String s1 : listString) //for all (string,boolean) in the map string
+//                if (!s1.isEmpty()) //is empty maybe will needed because the last char in the string is ","
+//                {
+//
+//                    list.add(userLocationConverter.fromString(s1)); //user location
+//                }
             return list;
         }
 

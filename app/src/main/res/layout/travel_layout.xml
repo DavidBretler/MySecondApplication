@@ -1,58 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relativeLayout"
-    android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeightLarge">
 
 
+<!--    <TextView-->
+<!--        android:id="@+id/Txt_numPassenger"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:textSize="8sp" />-->
 
-    <TextView
-        android:id="@+id/Txt_TravelDate"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:textSize="8sp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/Txt_ArrivalDate"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:textSize="8sp" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/Txt_TravelDate"-->
+<!--        android:layout_width="55dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:textSize="8sp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/Btn_changeToRun"-->
+<!--        android:layout_width="55dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:textSize="8sp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/Btn_changeToClose"-->
+<!--        android:layout_width="57dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:textSize="8sp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/Btn_approveCompany"-->
+<!--        android:layout_width="70dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:textSize="8sp" />-->
+
+    <!--    <androidx.appcompat.widget.AppCompatSpinner-->
+    <!--        android:id="@+id/spinnerCompany"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:gravity="center_vertical"-->
+    <!--        android:textSize="8sp"/>-->
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/listPreferredItemHeightLarge"
+        android:orientation="horizontal">
 
     <TextView
         android:id="@+id/Txt_ArrivalDate"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:textSize="8sp"/>
+        android:layout_height="39dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/Txt_TravelDate"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="100dp"
+        android:text="TextView" />
 
     <TextView
         android:id="@+id/Txt_numPassenger"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:textSize="8sp"/>
+        android:layout_height="39dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginLeft="210dp"
+        android:text="TextView" />
 
-<!--    <androidx.appcompat.widget.AppCompatSpinner-->
-<!--        android:id="@+id/spinnerCompany"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:textSize="8sp"/>-->
-
-    <Button
-        android:id="@+id/Btn_approveCompany"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:textSize="8sp"/>
 
     <Button
         android:id="@+id/Btn_changeToRun"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:textSize="8sp"/>
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:text="change to Run"
+        android:textSize="6dp" />
 
     <Button
         android:id="@+id/Btn_changeToClose"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:textSize="8sp"/>
+        android:layout_height="50dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="40dp"
+        android:textSize="6dp"
+        android:text="change to close" />
 
+    <Button
+        android:id="@+id/Btn_approveCompany"
+        android:layout_width="wrap_content"
+        android:layout_height="62dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="40dp"
+        android:text="approve Company"
+        android:textSize="6dp" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="310dp"
+        android:layout_marginLeft="310dp"
+        android:layout_marginTop="10dp"
+        />
 </RelativeLayout>
+
+

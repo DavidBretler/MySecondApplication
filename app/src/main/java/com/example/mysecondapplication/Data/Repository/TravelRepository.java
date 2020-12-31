@@ -14,6 +14,7 @@ import com.example.mysecondapplication.Entities.Travel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -81,12 +82,13 @@ public class TravelRepository implements ITravelRepository {
 
     public void  findHistoryTravelList(){
         // TODO: 30/12/2020
-//        LiveData<Travel> travelList =iRMhistoryDataSource.getTravels();
+        LiveData<List<Travel>> travelllist = new MutableLiveData<>();
+        travelllist = iRMhistoryDataSource.getTravels();
 //        Transformations.
-//        List<Travel> historyTravelList=new  LinkedList<Travel>();
-//        for (Travel t : travelList)
-//        if(t.getRequestType().toString().equals("close")||t.getRequestType().toString().equals("payed"))
-//            historyTravelList.add(t);
+       List<Travel> historyTravelList=new  LinkedList<Travel>();
+        for (Travel t : travelList)
+        if(t.getRequestType().toString().equals("close")||t.getRequestType().toString().equals("payed"))
+            historyTravelList.add(t);
 //
 //        HistoryTravels.setValue(historyTravelList);
     }
