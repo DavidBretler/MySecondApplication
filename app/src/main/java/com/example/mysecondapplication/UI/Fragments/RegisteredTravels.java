@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,9 +35,9 @@ public class RegisteredTravels extends Fragment {
     private FragmentsVM fragmentsVM;
     MyListAdapter adapter;
     RecyclerView recyclerView;
-    Spinner spinner;
     Context context;
     Button button;
+
     public List<Travel> Travels;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,9 +59,6 @@ public class RegisteredTravels extends Fragment {
         DividerItemDecoration itemDecor = new DividerItemDecoration(RegisteredTravels.this.getActivity(),1);
         recyclerView.addItemDecoration(itemDecor);
 
-
-        spinner= (Spinner) root.findViewById(R.id.spinner);
-
         fragmentsVM.getUserTravels().observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
             @Override
             public void onChanged(List<Travel> travels) {
@@ -68,7 +66,7 @@ public class RegisteredTravels extends Fragment {
 
                 Travel[] travelsArr = new Travel[travels.size()];
                 travels.toArray(travelsArr);
-                adapter = new MyListAdapter(travelsArr, context);
+                adapter = new MyListAdapter(travelsArr, context,requireActivity());
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(RegisteredTravels.this.getActivity()));
                 recyclerView.setAdapter(adapter);

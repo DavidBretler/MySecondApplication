@@ -159,7 +159,7 @@ public class NavigationDrawer extends AppCompatActivity {
                 travel2.getCompany().put("TsirTour",Boolean.FALSE);
                 travel2.setVIPBUS(true);
 
-    //           fragmentsVM.addTravel(travel2);
+   //            fragmentsVM.addTravel(travel2);
 
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();

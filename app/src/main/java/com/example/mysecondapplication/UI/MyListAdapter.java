@@ -11,24 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mysecondapplication.Entities.Travel;
-import com.example.mysecondapplication.Entities.UserLocation;
 import com.example.mysecondapplication.R;
 import com.example.mysecondapplication.UI.Fragments.FragmentsVM;
-import com.example.mysecondapplication.UI.NavigationDrawer.NavigationDrawer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,13 +36,15 @@ public class MyListAdapter  extends RecyclerView.Adapter<MyListAdapter.ViewHolde
     private Travel[] listdata;
     Context context;
     Location location;
+    boolean flag=true;
     FragmentsVM fragmentsVM;
+    FragmentActivity viewModelStore;
     public SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-     // public Context contex= getApplication()
-    // RecyclerView com.example.mysecondapplication.UI.recyclerView;
-    public MyListAdapter(Travel[] listdata,Context context) {
+
+    public MyListAdapter(Travel[] listdata, Context context, FragmentActivity viewModelStore) {
         this.listdata = listdata;
         this.context=context;
+        this.viewModelStore=viewModelStore;
     }
 
 
@@ -52,7 +53,7 @@ public class MyListAdapter  extends RecyclerView.Adapter<MyListAdapter.ViewHolde
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem= layoutInflater.inflate(R.layout.travel_layout, parent, false);
         ViewHolder viewHolder = new ViewHolder(listItem);
-     //   fragmentsVM = new ViewModelProvider(NavigationDrawer.class).get(FragmentsVM.class);
+        fragmentsVM = new ViewModelProvider(viewModelStore).get(FragmentsVM.class);
 
         return viewHolder;
     }
@@ -69,25 +70,52 @@ public class MyListAdapter  extends RecyclerView.Adapter<MyListAdapter.ViewHolde
         holder.arrivalDateTextView.setText("Source : "+pickupAddres);
         holder.travelDateTextView.setText("Destination: "+pickupAddres);
         holder.numOfPassengerTextView.setText("start Date:"+format.format(listdata[position].getTravelDate()));
-
-        holder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(),"click on buttune: ",Toast.LENGTH_LONG).show();
-                myListData.setRequestType(Travel.RequestType.run);
-        //        fragmentsVM.updateTravel(myListData);
-            }
-        });
-
-
         ArrayAdapter<String> adapter= new ArrayAdapter<> (context ,android.R.layout.simple_spinner_item, new ArrayList<String>( listdata[position].getCompany().keySet()) )  ;
         holder.spinner.setAdapter(adapter);
-          holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+
+
+        holder.Btn_chngeToRun.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(),"click on item: "+myListData.getClientName(),Toast.LENGTH_LONG).show();
+            public void onClick(View v) {
+                myListData.setRequestType(Travel.RequestType.run);
+                fragmentsVM.updateTravel(myListData);
+                Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
             }
         });
+        holder.Btn_chngeToclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myListData.setRequestType(Travel.RequestType.close);
+                fragmentsVM.updateTravel(myListData);
+                Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+            }
+        });
+        holder.Btn_AprroveCompany.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, Boolean> company=new HashMap<>();
+                   company = myListData.getCompany();
+                   company.put(holder.spinner.getSelectedItem().toString(), true);
+                   myListData.setCompany(company);
+                   fragmentsVM.updateTravel(myListData);
+                   Toast.makeText(context, "Data not yet  updated", Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+//        fragmentsVM.getIsSuccess().observe(viewModelStore, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean t) {
+//
+//                   flag=false;
+//                   if (t)
+//                       Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+//                   else
+//                       Toast.makeText(context, "Data Not updated", Toast.LENGTH_LONG).show();
+//
+//            }
+//        });
+
     }
 
     @Override
@@ -101,15 +129,19 @@ public class MyListAdapter  extends RecyclerView.Adapter<MyListAdapter.ViewHolde
         public TextView numOfPassengerTextView;
         public RelativeLayout relativeLayout;
         public Spinner spinner;
-        Button button;
+        Button Btn_chngeToRun;
+        Button Btn_chngeToclose;
+        Button Btn_AprroveCompany;
         public ViewHolder(View itemView) {
             super(itemView);
-            this.button= (Button) itemView.findViewById(R.id.Btn_changeToRun);
-            this.arrivalDateTextView = (TextView) itemView.findViewById(R.id.Txt_ArrivalDate);
-            this.travelDateTextView = (TextView) itemView.findViewById(R.id.Txt_TravelDate);
-            this.numOfPassengerTextView = (TextView) itemView.findViewById(R.id.Txt_numPassenger);
-           this.spinner=(Spinner) itemView.findViewById(R.id.spinner);
-            relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
+            this.Btn_chngeToRun =  itemView.findViewById(R.id.Btn_changeToRun);
+            this.Btn_chngeToclose= itemView.findViewById(R.id.Btn_changeToClose);
+            this.Btn_AprroveCompany=itemView.findViewById(R.id.Btn_approveCompany);
+            this.arrivalDateTextView =  itemView.findViewById(R.id.Txt_ArrivalDate);
+            this.travelDateTextView =  itemView.findViewById(R.id.Txt_TravelDate);
+            this.numOfPassengerTextView =  itemView.findViewById(R.id.Txt_numPassenger);
+           this.spinner= (Spinner) itemView.findViewById(R.id.spinner);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
         }
     }
     public String getPlace(Location location) {
