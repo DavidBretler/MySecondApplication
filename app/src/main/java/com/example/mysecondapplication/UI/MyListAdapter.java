@@ -77,42 +77,48 @@ public class MyListAdapter  extends RecyclerView.Adapter<MyListAdapter.ViewHolde
         holder.Btn_chngeToRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myListData.setRequestType(Travel.RequestType.run);
-                fragmentsVM.updateTravel(myListData);
-                Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+                if(myListData.getRequestType()!=Travel.RequestType.run) {
+                    myListData.setRequestType(Travel.RequestType.run);
+                    fragmentsVM.updateTravel(myListData);
+                    Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+                }
+                else
+                    Toast.makeText(context, " already in run statues", Toast.LENGTH_LONG).show();
             }
         });
         holder.Btn_chngeToclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myListData.setRequestType(Travel.RequestType.close);
-                fragmentsVM.updateTravel(myListData);
-                Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
-            }
+                    myListData.setRequestType(Travel.RequestType.close);
+                    fragmentsVM.updateTravel(myListData);
+                    Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+                }
         });
         holder.Btn_AprroveCompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashMap<String, Boolean> company=new HashMap<>();
                    company = myListData.getCompany();
-                   company.put(holder.spinner.getSelectedItem().toString(), true);
-                   myListData.setCompany(company);
-                   fragmentsVM.updateTravel(myListData);
-                   Toast.makeText(context, "Data not yet  updated", Toast.LENGTH_LONG).show();
-
-
+                   if(!company.get(holder.spinner.getSelectedItem().toString())) {
+                       company.put(holder.spinner.getSelectedItem().toString(), true);
+                       myListData.setCompany(company);
+                       fragmentsVM.updateTravel(myListData);
+                       listdata[position].setCompany(company);
+                       myListData.setCompany(company);
+                       Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+                   }
+                   else
+                       Toast.makeText(context, "company is already approved", Toast.LENGTH_LONG).show();
             }
         });
 //        fragmentsVM.getIsSuccess().observe(viewModelStore, new Observer<Boolean>() {
 //            @Override
 //            public void onChanged(Boolean t) {
-//
 //                   flag=false;
 //                   if (t)
 //                       Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
 //                   else
 //                       Toast.makeText(context, "Data Not updated", Toast.LENGTH_LONG).show();
-//
 //            }
 //        });
 

@@ -2,8 +2,10 @@ package com.example.mysecondapplication.Data.Repository;
 
 import android.app.Application;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import com.example.mysecondapplication.Data.RMhistoryDataSource;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TravelRepository implements ITravelRepository {
+public class TravelRepository implements ITravelRepository  {
     IFBtravelDataSource iFBtravelDataSource;
     private IRMhistoryDataSource iRMhistoryDataSource;
     private MutableLiveData<List<Travel>> openTravels = new MutableLiveData<>();
@@ -28,13 +30,14 @@ public class TravelRepository implements ITravelRepository {
     private  List<Travel> userTravelList;
     public FirebaseAuth mAuth;
     public FirebaseUser user;
+    private Application application;
     private MutableLiveData<List<Travel>> AllTravels = new MutableLiveData<>();
-
 
     private static TravelRepository instance;
     public static TravelRepository getInstance(Application application) {
-        if (instance == null)
+        if (instance == null) {
             instance = new TravelRepository(application);
+        }
         return instance;
     }
 
@@ -43,11 +46,11 @@ public class TravelRepository implements ITravelRepository {
         iRMhistoryDataSource = new RMhistoryDataSource(application.getApplicationContext());
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-
+      this.application=application;
         IFBtravelDataSource.NotifyToTravelListListener notifyToTravelListListener = new IFBtravelDataSource.NotifyToTravelListListener() {
             @Override
             public void onTravelsChanged() {
-                 travelList = iFBtravelDataSource.getAllTravels();
+                travelList = iFBtravelDataSource.getAllTravels();
                 AllTravels.setValue(travelList);
 
                 findUserTravelList();
@@ -60,6 +63,17 @@ public class TravelRepository implements ITravelRepository {
         };
 
         iFBtravelDataSource.setNotifyToTravelListListener(notifyToTravelListListener);
+
+        iRMhistoryDataSource.getTravels().observeForever(new Observer<List<Travel>>()  {
+            @Override
+            public void onChanged(List<Travel> historyTravelList) {
+                for (Travel t :historyTravelList)
+                    if(!t.getRequestType().toString().equals("close"))
+                        historyTravelList.remove(t);
+                HistoryTravels.setValue(historyTravelList);
+            }
+        });
+
     }
     public void findUserTravelList(){
         //find the connected user travel list
@@ -82,15 +96,18 @@ public class TravelRepository implements ITravelRepository {
 
     public void  findHistoryTravelList(){
         // TODO: 30/12/2020
-        LiveData<List<Travel>> travelllist = new MutableLiveData<>();
-        travelllist = iRMhistoryDataSource.getTravels();
+      LiveData <List<Travel>> travelList = new MutableLiveData<>();
+       travelList =  iRMhistoryDataSource.getTravels();
 //        Transformations.
-       List<Travel> historyTravelList=new  LinkedList<Travel>();
-        for (Travel t : travelList)
-        if(t.getRequestType().toString().equals("close"))
-            historyTravelList.add(t);
+ //       List<Travel> historyTravelList=new  LinkedList<Travel>();
 
-      HistoryTravels.setValue(historyTravelList);
+//        for (Travel t :historyTravelList)
+//        if(!t.getRequestType().toString().equals("close"))
+//            historyTravelList.remove(t);
+       // fragmentsVM.getOpenTravels().observe(this, new Observer<List<Travel>>() {
+
+
+
     }
     @Override
     public void addTravel(Travel travel) {

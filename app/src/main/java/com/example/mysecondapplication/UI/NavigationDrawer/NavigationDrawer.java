@@ -153,13 +153,13 @@ public class NavigationDrawer extends AppCompatActivity {
              //   travel2.setDetentionAddress(new UserLocation(15.0, 25.0));
                 travel2.setTravelDate(tDate);
                 travel2.setArrivalDate(tDate);
-                travel2.setRequestType(Travel.RequestType.close);
+                travel2.setRequestType(Travel.RequestType.accepted);
                 travel2.setCompany(new HashMap<String, Boolean>());
                 travel2.getCompany().put("Egged",Boolean.FALSE);
                 travel2.getCompany().put("TsirTour",Boolean.FALSE);
                 travel2.setVIPBUS(true);
 
-   //            fragmentsVM.addTravel(travel2);
+               fragmentsVM.addTravel(travel2);
 
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();

@@ -105,8 +105,9 @@ public class FBtravelDataSource implements IFBtravelDataSource {
 
     @Override
     public void updateTravel(final Travel toUpdate) {
-        removeTravel(toUpdate.getTravelId());
-        addTravel(toUpdate);
+     //   removeTravel(toUpdate.getTravelId());
+    //    addTravel(toUpdate);
+        travels.child(toUpdate.getTravelId()).setValue(toUpdate);
     }
 
     @Override
