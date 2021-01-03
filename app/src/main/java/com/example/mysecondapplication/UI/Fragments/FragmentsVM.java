@@ -46,9 +46,9 @@ public class FragmentsVM extends AndroidViewModel {
         repository.updateTravel(travel);
     }
 
-    public MutableLiveData<List<Travel>> getOpenTravels()
+    public MutableLiveData<List<Travel>> getOpenTravels(double lat, double lon,int maxDis)
     {
-        return (MutableLiveData<List<Travel>>) repository.getOpenTravels();
+        return (MutableLiveData<List<Travel>>) repository.getOpenTravels(lat,lon,maxDis);
     }
 
     public MutableLiveData<List<Travel>> getUserTravels()

@@ -1,7 +1,14 @@
 package com.example.mysecondapplication.UI.NavigationDrawer;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -38,6 +46,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static androidx.constraintlayout.motion.widget.Debug.getLocation;
+
 public class NavigationDrawer extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -46,6 +56,9 @@ public class NavigationDrawer extends AppCompatActivity {
     public FirebaseAuth mAuth;
     private FragmentsVM fragmentsVM;
     RegisteredTravels registeredTravels;
+    LocationManager locationManager;
+    Location location;
+    LocationListener locationListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,27 +102,59 @@ public class NavigationDrawer extends AppCompatActivity {
          Txt_welcomeUser.setText("welcome user: " + email);
 
        checkdate();
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+            //    Toast.makeText(getBaseContext(), Double.toString(location.getLatitude()) + " : " + Double.toString(location.getLongitude()), Toast.LENGTH_LONG).show();
+                double curLatitude = location.getLatitude();
+                double curLongitude = location.getLongitude();
+            }
+
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            public void onProviderEnabled(String provider) {
+            }
+
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
+        getLocation();
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+//                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this , Manifest.permission.ACCESS_COARSE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//
+//            // return TODO;
+//        }
+
+ //        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
+
 
     public void checkdate () {
 
         fragmentsVM = new ViewModelProvider(this).get(FragmentsVM.class);
-        fragmentsVM.getOpenTravels().observe(this, new Observer<List<Travel>>() {
-            @Override
-            public void onChanged(List<Travel> travels) {
-                for (Travel tmp : travels) {
-                    Log.e("test", tmp.getClientName() + ":  ");
-                    //https://www.callicoder.com/java-hashmap/
-                    //HashMap is a hash table based implementation of Java’s Map interface
-                    Iterator it = tmp.getCompany().entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry) it.next();
-                        System.out.println("HashMap:  " + pair.getKey() + " = " + pair.getValue());
 
-                    }
-                }
-            }
-        });
+//        fragmentsVM.getOpenTravels().observe(this, new Observer<List<Travel>>() {
+//            @Override
+//            public void onChanged(List<Travel> travels) {
+//                for (Travel tmp : travels) {
+//                    Log.e("test", tmp.getClientName() + ":  ");
+//                    //https://www.callicoder.com/java-hashmap/
+//                    //HashMap is a hash table based implementation of Java’s Map interface
+//                    Iterator it = tmp.getCompany().entrySet().iterator();
+//                    while (it.hasNext()) {
+//                        Map.Entry pair = (Map.Entry) it.next();
+//                        System.out.println("HashMap:  " + pair.getKey() + " = " + pair.getValue());
+//
+//                    }
+//                }
+//            }
+//        });
 
         fragmentsVM.getIsSuccess().observe(this, new Observer<Boolean>() {
             @Override
@@ -149,7 +194,7 @@ public class NavigationDrawer extends AppCompatActivity {
                 travel2.setClientName("Ronit");
                 travel2.setClientPhone("026334512");
                 travel2.setClientEmail("ddkill8@gmail.com");
-                travel2.setPickupAddress(new UserLocation(	38.89560181521182, -77.0328762512747));
+                travel2.setPickupAddress(new UserLocation(	31.934466609645973, 35.02629946297578));
              //   travel2.setDetentionAddress(new UserLocation(15.0, 25.0));
                 travel2.setTravelDate(tDate);
                 travel2.setArrivalDate(tDate);
@@ -159,7 +204,7 @@ public class NavigationDrawer extends AppCompatActivity {
                 travel2.getCompany().put("TsirTour",Boolean.FALSE);
                 travel2.setVIPBUS(true);
 
-               fragmentsVM.addTravel(travel2);
+  //             fragmentsVM.addTravel(travel2);
 
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -235,6 +280,20 @@ public class NavigationDrawer extends AppCompatActivity {
 
         // show it
         alertDialog.show();
+
+    }
+
+    public void getLocation() {
+
+        //     Check the SDK version and whether the permission is already granted or not.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 5);
+
+        } else {
+            // Android version is lesser than 6.0 or the permission is already granted.
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
 
     }
 }

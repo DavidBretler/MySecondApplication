@@ -15,7 +15,7 @@ public interface ITravelRepository {
 
     public MutableLiveData<List<Travel>> getUserTravels();
 
-    MutableLiveData<List<Travel>> getOpenTravels();
+    MutableLiveData<List<Travel>> getOpenTravels(double lat,double lon,int maxDis);
 
     MutableLiveData<List<Travel>> getHistoryTravels();
 
