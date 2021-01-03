@@ -21,6 +21,8 @@ public class FragmentsVM extends AndroidViewModel {
   private Context context;
     private MutableLiveData<String> mText;
     ITravelRepository repository;
+    private MutableLiveData<List<Travel>> UserTravelList = new  MutableLiveData<>();
+    private  List<Travel> travelList;
     public FragmentsVM(Application p) {
       super(p);
         mText = new MutableLiveData<>();
@@ -52,14 +54,8 @@ public class FragmentsVM extends AndroidViewModel {
     public MutableLiveData<List<Travel>> getUserTravels()
     {
 
-//        MutableLiveData<List<Travel>> UserTravelList= repository.getUserTravels();
-//        List<Travel> userTravelList= (List<Travel>) UserTravelList;
-//        for (Travel t : UserTravelList)
-//            if(t.getRequestType().equals(Travel.RequestType.close))
-//                userTravelList.remove(t);
-//        UserTravelList.setValue(userTravelList);
-//        return UserTravelList;
-        return repository.getUserTravels();
+        return  repository.getUserTravels();
+
     }
     public MutableLiveData<List<Travel>> gethistoryTravels()
     {

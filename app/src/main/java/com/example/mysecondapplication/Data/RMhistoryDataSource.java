@@ -13,6 +13,7 @@ public class RMhistoryDataSource implements IRMhistoryDataSource {
     private TravelDao travelDao;
 
     public RMhistoryDataSource(Context context){
+
         RoomDataSource database= RoomDataSource.getInstance(context);
         travelDao =database.getTravelDao();
         travelDao.clear();

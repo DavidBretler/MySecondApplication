@@ -20,6 +20,7 @@ import android.app.Application;
 
 @Entity (tableName = "travels")
 
+
 public class Travel {
 
     /////////////FIELDS
@@ -60,6 +61,7 @@ public class Travel {
 
     public String getClientName() {return this.clientName; }
 
+
     public String getClientPhone() {return this.clientPhone; }
 
     public String getClientEmail() {return this.clientEmail; }
@@ -87,6 +89,7 @@ public class Travel {
 
     public void setClientName(String clientName) { this.clientName = clientName; }
 
+
     public void setClientPhone(String clientPhone) { this.clientPhone = clientPhone; }
 
     public void setClientEmail(String clientEmail) { this.clientEmail = clientEmail; }
@@ -107,7 +110,7 @@ public class Travel {
 
     public void setCompany(HashMap<String, Boolean> company) { this.company = company; }
 
-    public Travel(String clientName, String clientPhone, String clientEmail, Date departingDate, Date returnDate
+    public Travel(String clientName,String clientName2, String clientPhone, String clientEmail, Date departingDate, Date returnDate
             ,int numOfPassenger,UserLocation  pickupAddress , UserLocation destAddress,RequestType requestType,boolean VIPBUS, HashMap<String, Boolean> company) {
         this.clientName = clientName;
         this.clientPhone = clientPhone;
@@ -123,6 +126,8 @@ public class Travel {
     }
 
     public  Travel(){}
+
+
 
 
     public static class DateConverter {

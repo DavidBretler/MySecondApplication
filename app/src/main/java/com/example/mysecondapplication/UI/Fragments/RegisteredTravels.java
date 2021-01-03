@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mysecondapplication.Data.Repository.TravelRepository;
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.R;
 import com.example.mysecondapplication.UI.MyListAdapter;

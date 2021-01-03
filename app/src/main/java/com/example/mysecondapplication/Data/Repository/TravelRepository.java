@@ -1,6 +1,9 @@
 package com.example.mysecondapplication.Data.Repository;
 
 import android.app.Application;
+import android.location.Location;
+import android.location.LocationManager;
+import android.widget.Toast;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -20,6 +23,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import Utils.GPS;
+
 public class TravelRepository implements ITravelRepository  {
     IFBtravelDataSource iFBtravelDataSource;
     private IRMhistoryDataSource iRMhistoryDataSource;
@@ -32,7 +37,8 @@ public class TravelRepository implements ITravelRepository  {
     public FirebaseUser user;
     private Application application;
     private MutableLiveData<List<Travel>> AllTravels = new MutableLiveData<>();
-
+     Location location;
+     GPS gps;
     private static TravelRepository instance;
     public static TravelRepository getInstance(Application application) {
         if (instance == null) {
@@ -64,15 +70,15 @@ public class TravelRepository implements ITravelRepository  {
 
         iFBtravelDataSource.setNotifyToTravelListListener(notifyToTravelListListener);
 
-        iRMhistoryDataSource.getTravels().observeForever(new Observer<List<Travel>>()  {
-            @Override
-            public void onChanged(List<Travel> historyTravelList) {
-                for (Travel t :historyTravelList)
-                    if(!t.getRequestType().toString().equals("close"))
-                        historyTravelList.remove(t);
-                HistoryTravels.setValue(historyTravelList);
-            }
-        });
+//        iRMhistoryDataSource.getTravels().observeForever(new Observer<List<Travel>>()  {
+//            @Override
+//            public void onChanged(List<Travel> historyTravelList) {
+//                for (Travel t :historyTravelList)
+//                    if(!t.getRequestType().toString().equals("close"))
+//                        historyTravelList.remove(t);
+//                HistoryTravels.setValue(historyTravelList);
+//            }
+//        });
 
     }
     public void findUserTravelList(){
@@ -80,17 +86,28 @@ public class TravelRepository implements ITravelRepository  {
         userTravelList=new LinkedList<Travel>();
         String UserEmail=user.getEmail();
         for (Travel t : travelList)
-            if(t.getClientEmail().equals(UserEmail))
+            if(t.getClientEmail().equals(UserEmail) && t.getRequestType()!= Travel.RequestType.close)
                 userTravelList.add(t);
         UserTravels.setValue(userTravelList);
     }
 
     public void findOpenTravelList(){
-        //returns the open travels to the company
+        //returns the open travels to the company when max dis is 20 from picapp address
+
+
+
         LinkedList<Travel> companyTravels = new LinkedList<Travel>();
         for (Travel t : travelList)
             if(t.getRequestType().toString().equals("sent")||t.getRequestType().toString().equals("accepted"))
+            {
+//                location = new Location(LocationManager.GPS_PROVIDER);
+//                location.setLatitude(t.getPickupAddress().getLat());
+//                location.setLongitude(t.getPickupAddress().getLon());
+                gps=new GPS();
+                double distance=  gps.calculateDistance(t.getPickupAddress().getLat(),t.getPickupAddress().getLon());
+                Toast.makeText(this.application.getApplicationContext(), " dis is :"+distance, Toast.LENGTH_LONG).show();
                 companyTravels.add(t);
+            }
         openTravels.setValue(companyTravels);
     }
 
@@ -104,7 +121,6 @@ public class TravelRepository implements ITravelRepository  {
 //        for (Travel t :historyTravelList)
 //        if(!t.getRequestType().toString().equals("close"))
 //            historyTravelList.remove(t);
-       // fragmentsVM.getOpenTravels().observe(this, new Observer<List<Travel>>() {
 
 
 
@@ -135,10 +151,7 @@ public class TravelRepository implements ITravelRepository  {
         return openTravels;
     }
     @Override
-    public MutableLiveData<List<Travel>> getHistoryTravels() {
-
-        return HistoryTravels;
-    }
+    public MutableLiveData<List<Travel>> getHistoryTravels() { return HistoryTravels; }
 
     @Override
     public MutableLiveData<Boolean> getIsSuccess() {

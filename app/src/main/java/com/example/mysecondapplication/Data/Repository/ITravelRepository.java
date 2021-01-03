@@ -13,8 +13,7 @@ public interface ITravelRepository {
     void updateTravel(Travel travel);
     MutableLiveData<List<Travel>> getAllTravels();
 
-
-    MutableLiveData<List<Travel>> getUserTravels();
+    public MutableLiveData<List<Travel>> getUserTravels();
 
     MutableLiveData<List<Travel>> getOpenTravels();
 
