@@ -1,37 +1,27 @@
 package com.example.mysecondapplication.Data.Repository;
 
-import android.Manifest;
 import android.app.Application;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
-import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 
-import com.example.mysecondapplication.Data.RMhistoryDataSource;
-import com.example.mysecondapplication.Data.IRMhistoryDataSource;
-import com.example.mysecondapplication.Data.IFBtravelDataSource;
 import com.example.mysecondapplication.Data.FBtravelDataSource;
+import com.example.mysecondapplication.Data.IFBtravelDataSource;
+import com.example.mysecondapplication.Data.IRMhistoryDataSource;
+import com.example.mysecondapplication.Data.RMhistoryDataSource;
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.UI.NavigationDrawer.NavigationDrawer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import Utils.GPS;
-
-import static androidx.constraintlayout.motion.widget.Debug.getLocation;
 
 public class TravelRepository implements ITravelRepository {
     IFBtravelDataSource iFBtravelDataSource;
@@ -65,36 +55,39 @@ public class TravelRepository implements ITravelRepository {
         user = mAuth.getCurrentUser();
         this.application = application;
         List<Travel> historyTravelList=new  LinkedList<Travel>();
+
         IFBtravelDataSource.NotifyToTravelListListener notifyToTravelListListener = new IFBtravelDataSource.NotifyToTravelListListener() {
             @Override
+            //get all travels from fire base split to some list to the fragments
+            //react to changes
             public void onTravelsChanged() {
                 travelList = iFBtravelDataSource.getAllTravels();
                 AllTravels.setValue(travelList);
 
                 findUserTravelList();
            //     findOpenTravelList();
-                findHistoryTravelList();
-
+           //     findHistoryTravelList();
+              //puse all close travel to the room
                 for (Travel t :travelList)
-                    if(!t.getRequestType().toString().equals("close"))
+                    if(t.getRequestType().toString().equals("close"))
                         historyTravelList.add(t);
 
                 iRMhistoryDataSource.clearTable();
                 iRMhistoryDataSource.addTravel(historyTravelList);
             }
         };
-
+        // make sure we react to changes in the firebase
         iFBtravelDataSource.setNotifyToTravelListListener(notifyToTravelListListener);
 
-//        iRMhistoryDataSource.getTravels().observeForever(new Observer<List<Travel>>()  {
-//            @Override
-//            public void onChanged(List<Travel> historyTravelList) {
-//                for (Travel t :historyTravelList)
-//                    if(!t.getRequestType().toString().equals("close"))
-//                        historyTravelList.remove(t);
-//                HistoryTravels.setValue(historyTravelList);
-//            }
-//        });
+        iRMhistoryDataSource.getTravels().observeForever(new Observer<List<Travel>>()  {
+            @Override
+            public void onChanged(List<Travel> historyTravelList) {
+                for (Travel t :historyTravelList)
+                    if(!t.getRequestType().toString().equals("close"))
+                        historyTravelList.remove(t);
+                HistoryTravels.setValue(historyTravelList);
+            }
+        });
 
     }
 
@@ -109,16 +102,13 @@ public class TravelRepository implements ITravelRepository {
     }
 
     public void findOpenTravelList(double lat,double lon,int maxDis) {
-        //returns the open travels to the company when max dis is 20 from picapp address
+        //returns the open travels to the company
+        // when  dis is less then maxDis from picapp address
 
         navigationDrawer = new NavigationDrawer();
         LinkedList<Travel> companyTravels = new LinkedList<Travel>();
         for (Travel t : travelList) {
             if (t.getRequestType().toString().equals("sent") || t.getRequestType().toString().equals("accepted")) {
-//
-//              gps = new GPS();
-//            double distance = gps.calculateDistance(lat,lon,t.getPickupAddress().getLat(), t.getPickupAddress().getLon());
-
                 Location temp = new Location(LocationManager.GPS_PROVIDER);
                 temp.setLatitude(lat);
                 temp.setLongitude(lon);
@@ -138,9 +128,11 @@ public class TravelRepository implements ITravelRepository {
     }
     public void findHistoryTravelList() {
         // TODO: 30/12/2020
-        LiveData<List<Travel>> travelList = new MutableLiveData<>();
-        travelList = iRMhistoryDataSource.getTravels();
-//        Transformations.
+//        LiveData<List<Travel>> travelList = new MutableLiveData<>();
+//        LiveData<List<Travel>> travelList1 = new MutableLiveData<>();
+//        travelList = iRMhistoryDataSource.getTravels();
+//        Object o = travelList.getValue();
+        //        Transformations.
         //       List<Travel> historyTravelList=new  LinkedList<Travel>();
 
 //        for (Travel t :historyTravelList)
@@ -171,6 +163,9 @@ public class TravelRepository implements ITravelRepository {
     }
 
     @Override
+    //returns the open travels to the company
+    // when  dis is less then maxDis from picapp address
+    //return the mutable live data that observ from the fragments view model
     public MutableLiveData<List<Travel>> getOpenTravels(double lat ,double lon,int maxDis) {
         // TODO: 04/01/2021 check if good
         findOpenTravelList(lat,lon,maxDis);

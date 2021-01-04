@@ -10,7 +10,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.view.Menu;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.Entities.UserLocation;
 import com.example.mysecondapplication.R;
@@ -28,7 +28,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -39,14 +38,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import static androidx.constraintlayout.motion.widget.Debug.getLocation;
 
 public class NavigationDrawer extends AppCompatActivity {
 
@@ -171,7 +164,9 @@ public class NavigationDrawer extends AppCompatActivity {
 
                 String travelDate ;
                 travelDate =  "2020"+"-"+"02"+"-"+"25";
+                 String  travelDate2 =  "2020"+"-"+"02"+"-"+"30";
                 Date tDate = new Travel.DateConverter().fromTimestamp(travelDate);
+                 Date tDate2 = new Travel.DateConverter().fromTimestamp(travelDate2);
                 if (tDate == null)
                     throw new Exception("שגיאה בתאריך");
 
@@ -191,20 +186,20 @@ public class NavigationDrawer extends AppCompatActivity {
 //                navigationDrawerVM.updateTravel(travel1);
 
                 Travel travel2 = new Travel();
-                travel2.setClientName("Ronit");
+                travel2.setClientName("abi");
                 travel2.setClientPhone("026334512");
                 travel2.setClientEmail("ddkill8@gmail.com");
                 travel2.setPickupAddress(new UserLocation(	31.934466609645973, 35.02629946297578));
              //   travel2.setDetentionAddress(new UserLocation(15.0, 25.0));
                 travel2.setTravelDate(tDate);
-                travel2.setArrivalDate(tDate);
-                travel2.setRequestType(Travel.RequestType.accepted);
+                travel2.setArrivalDate(tDate2);
+                travel2.setRequestType(Travel.RequestType.close);
                 travel2.setCompany(new HashMap<String, Boolean>());
                 travel2.getCompany().put("Egged",Boolean.FALSE);
                 travel2.getCompany().put("TsirTour",Boolean.FALSE);
                 travel2.setVIPBUS(true);
 
-  //             fragmentsVM.addTravel(travel2);
+      //         fragmentsVM.addTravel(travel2);
 
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();

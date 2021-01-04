@@ -1,6 +1,4 @@
-package com.example.mysecondapplication.UI;
-
-
+package com.example.mysecondapplication.UI.recyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,11 +7,9 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,11 +24,9 @@ import com.example.mysecondapplication.R;
 import com.example.mysecondapplication.UI.Fragments.FragmentsVM;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.collection.LLRBNode;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -88,7 +82,7 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
         holder.Btn_sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-          sendMail();
+          sendMail(myListData.getClientEmail());
             }
         });
         holder.Btn_AprroveCompany.setOnClickListener(new View.OnClickListener() {
@@ -128,15 +122,15 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
         RelativeLayout relativeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
-            this.Txt_name =  itemView.findViewById(R.id.Txt_name);
-            this.Txt_travelDate =  itemView.findViewById(R.id.Txt_date);
+            this.Txt_name =  itemView.findViewById(R.id.Txt_name2);
+            this.Txt_travelDate =  itemView.findViewById(R.id.Txt_date2);
             this.Txt_numOfPassenger =  itemView.findViewById(R.id.Txt_numOfPassenger);
             this.Txt_sourceAddress= itemView.findViewById(R.id.Txt_sourceAdress);
             this.Txt_destAddress=itemView.findViewById(R.id.Txt_desAdress);
-            this.Btn_sendEmail =  itemView.findViewById(R.id.Btn_sendEmail);
-            this.Btn_AprroveCompany =  itemView.findViewById(R.id.Btn_approve);
+            this.Btn_sendEmail =  itemView.findViewById(R.id.Btn_sendEmail2);
+            this.Btn_AprroveCompany =  itemView.findViewById(R.id.Btn_compantPayd);
 
-            relativeLayout = itemView.findViewById(R.id.relativeLayout2);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout3);
         }
     }
     public String getPlace(Location location) {
@@ -168,12 +162,12 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
         }
         return "IOException ...";
     }
-    private void sendMail() {
-        String  recipientList = user.getEmail();
+    private void sendMail(String email) {
+        String  recipientList =email;
         String[] recipients = recipientList.split(",");
 
         String subject = "new travel company";
-        String message = "Hallow, we offer you our ride services  ";
+        String message = "Hello, we offer you our ride services  ";
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_EMAIL, recipients);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);

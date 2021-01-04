@@ -1,20 +1,19 @@
 package com.example.mysecondapplication.UI.Fragments;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 
 import com.example.mysecondapplication.Data.Repository.ITravelRepository;
 import com.example.mysecondapplication.Data.Repository.TravelRepository;
 import com.example.mysecondapplication.Entities.Travel;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class FragmentsVM extends AndroidViewModel {
@@ -25,12 +24,7 @@ public class FragmentsVM extends AndroidViewModel {
     private  List<Travel> travelList;
     public FragmentsVM(Application p) {
       super(p);
-        mText = new MutableLiveData<>();
-//        if (NavigationDrawerVM.super.getClass() instanceof  RegisteredTravels.class)
-//        mText.setValue("This is RegisteredTravels fragment");
-//        else
-//            mText.setValue("This is not  RegisteredTravels fragment");
-     //   context =p.getBaseContext();
+
         repository = TravelRepository.getInstance(p);
     }
 

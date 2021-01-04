@@ -19,9 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.TypeConverter;
 
-import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.Entities.UserLocation;
 import com.example.mysecondapplication.R;
 import com.example.mysecondapplication.UI.NavigationDrawer.NavigationDrawer;
@@ -32,7 +30,6 @@ import com.google.firebase.auth.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
         public FirebaseAuth mAuth;

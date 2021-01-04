@@ -1,4 +1,4 @@
-package com.example.mysecondapplication.UI;
+package com.example.mysecondapplication.UI.recyclerView;
 
 
 import android.content.Context;
@@ -146,7 +146,7 @@ public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.Vi
             this.travelDateTextView =  itemView.findViewById(R.id.Txt_TravelDate);
             this.numOfPassengerTextView =  itemView.findViewById(R.id.Txt_numPassenger);
            this.spinner= (Spinner) itemView.findViewById(R.id.spinner);
-            relativeLayout = itemView.findViewById(R.id.relativeLayout2);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
         }
     }
     public String getPlace(Location location) {

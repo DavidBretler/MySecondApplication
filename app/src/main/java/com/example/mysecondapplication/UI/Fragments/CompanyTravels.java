@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -24,8 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.R;
-import com.example.mysecondapplication.UI.ListAdapterCompany;
-import com.example.mysecondapplication.UI.ListAdapterTravel;
+import com.example.mysecondapplication.UI.recyclerView.ListAdapterCompany;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,23 +39,31 @@ public class CompanyTravels extends Fragment {
     double curLatitude;
     double curLongitude;
     Context contex;
+    Button button;
     RecyclerView recyclerView;
     ListAdapterCompany adapter;
     public List<Travel> Travels;
-
+    public int    maxDis=30000;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         fragmentsVM =
                 new ViewModelProvider(this).get(FragmentsVM.class);
         View root = inflater.inflate(R.layout.fragment_company_travels, container, false);
          contex =this.getActivity();
-
+         //active locationManager to find current location
          locationManager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
-
+//     button= root.findViewById(R.id.button);
+//      button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                maxDis=20000;
+//                  Toast.makeText(contex,"num"+maxDis,Toast.LENGTH_SHORT).show();
+//            }
+//        });
          locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                 //  Toast.makeText( contex , Double.toString(location.getLatitude()) + " : " + Double.toString(location.getLongitude()), Toast.LENGTH_LONG).show();
+                  // Toast.makeText( contex , Double.toString(location.getLatitude()) + " : " + Double.toString(location.getLongitude()), Toast.LENGTH_LONG).show();
                  curLatitude = location.getLatitude();
                  curLongitude = location.getLongitude();
             }
@@ -73,27 +80,30 @@ public class CompanyTravels extends Fragment {
         };
 
        getLocation();
-
+       //check Permission to find current location
         if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 5);
 
-            // return TODO;
         }
+        //find current location
          location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
          curLatitude=location.getLatitude();
          curLongitude=location.getLongitude();
 
          contex =CompanyTravels.this.getActivity().getBaseContext();
         recyclerView = (RecyclerView) root.findViewById(R.id.company_travel_recyclerView);
+        //make lines between layout in list
         DividerItemDecoration itemDecor = new DividerItemDecoration(CompanyTravels.this.getActivity(),1);
         recyclerView.addItemDecoration(itemDecor);
-         int  maxDis=30000;
+
+        //  get all the travels that open for suggestions into grafic list
+        //  react to changes
         fragmentsVM.getOpenTravels(curLatitude,curLongitude,maxDis).observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
             @Override
             public void onChanged(List<Travel> travels) {
                 Travels=new LinkedList<>(travels);
-
                 Travel[] travelsArr = new Travel[travels.size()];
                 travels.toArray(travelsArr);
                 adapter = new ListAdapterCompany(travelsArr, contex,requireActivity());
@@ -104,7 +114,6 @@ public class CompanyTravels extends Fragment {
         });
 
         return root;
-
     }
         public void getLocation()
             {
@@ -115,6 +124,7 @@ public class CompanyTravels extends Fragment {
 
                 } else {
                     // Android version is lesser than 6.0 or the permission is already granted.
+                    //active locationListener
 
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 100, locationListener);
                 }

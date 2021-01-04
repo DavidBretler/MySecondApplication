@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.R;
-import com.example.mysecondapplication.UI.ListAdapterTravel;
+import com.example.mysecondapplication.UI.recyclerView.ListAdapterTravel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +30,6 @@ public class RegisteredTravels extends Fragment {
     ListAdapterTravel adapter;
     RecyclerView recyclerView;
     Context context;
-    Button button;
 
     public List<Travel> Travels;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -40,7 +39,7 @@ public class RegisteredTravels extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_registered_travels, container, false);
 
-        button=(Button) root.findViewById(R.id.Btn_changeToRun);
+//        button=(Button) root.findViewById(R.id.Btn_changeToRun);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -51,9 +50,11 @@ public class RegisteredTravels extends Fragment {
  //       }
         context =RegisteredTravels.this.getActivity().getBaseContext();
         recyclerView = (RecyclerView) root.findViewById(R.id.user_travel_recyclerView);
+        //make lines between layout in the grafic list
         DividerItemDecoration itemDecor = new DividerItemDecoration(RegisteredTravels.this.getActivity(),1);
         recyclerView.addItemDecoration(itemDecor);
-
+        //  get all the travels that of the user  into grafic list
+        //  react to changes
         fragmentsVM.getUserTravels().observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
             @Override
             public void onChanged(List<Travel> travels) {
