@@ -12,18 +12,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.R;
+import com.example.mysecondapplication.UI.ListAdapterCompany;
+import com.example.mysecondapplication.UI.ListAdapterTravel;
 
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -35,20 +39,24 @@ public class CompanyTravels extends Fragment {
     LocationListener locationListener;
     double curLatitude;
     double curLongitude;
+    Context contex;
+    RecyclerView recyclerView;
+    ListAdapterCompany adapter;
+    public List<Travel> Travels;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         fragmentsVM =
                 new ViewModelProvider(this).get(FragmentsVM.class);
         View root = inflater.inflate(R.layout.fragment_company_travels, container, false);
-
-        final TextView textView = root.findViewById(R.id.text_gallery);
+         contex =this.getActivity();
 
          locationManager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
 
          locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                //    Toast.makeText(getBaseContext(), Double.toString(location.getLatitude()) + " : " + Double.toString(location.getLongitude()), Toast.LENGTH_LONG).show();
+                 //  Toast.makeText( contex , Double.toString(location.getLatitude()) + " : " + Double.toString(location.getLongitude()), Toast.LENGTH_LONG).show();
                  curLatitude = location.getLatitude();
                  curLongitude = location.getLongitude();
             }
@@ -76,12 +84,22 @@ public class CompanyTravels extends Fragment {
          curLatitude=location.getLatitude();
          curLongitude=location.getLongitude();
 
-         int  maxDis=20000;
+         contex =CompanyTravels.this.getActivity().getBaseContext();
+        recyclerView = (RecyclerView) root.findViewById(R.id.company_travel_recyclerView);
+        DividerItemDecoration itemDecor = new DividerItemDecoration(CompanyTravels.this.getActivity(),1);
+        recyclerView.addItemDecoration(itemDecor);
+         int  maxDis=30000;
         fragmentsVM.getOpenTravels(curLatitude,curLongitude,maxDis).observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
             @Override
             public void onChanged(List<Travel> travels) {
-                Toast.makeText(getActivity(), "size is :" + travels.size(),
-                        Toast.LENGTH_SHORT).show();
+                Travels=new LinkedList<>(travels);
+
+                Travel[] travelsArr = new Travel[travels.size()];
+                travels.toArray(travelsArr);
+                adapter = new ListAdapterCompany(travelsArr, contex,requireActivity());
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(CompanyTravels.this.getActivity()));
+                recyclerView.setAdapter(adapter);
             }
         });
 
@@ -98,7 +116,7 @@ public class CompanyTravels extends Fragment {
                 } else {
                     // Android version is lesser than 6.0 or the permission is already granted.
 
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 100, locationListener);
                 }
             }
     }

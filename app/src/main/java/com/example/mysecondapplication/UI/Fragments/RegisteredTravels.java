@@ -1,37 +1,23 @@
 package com.example.mysecondapplication.UI.Fragments;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mysecondapplication.Data.Repository.TravelRepository;
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.R;
-import com.example.mysecondapplication.UI.MyListAdapter;
+import com.example.mysecondapplication.UI.ListAdapterTravel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -41,7 +27,7 @@ public class RegisteredTravels extends Fragment {
 
 
     private FragmentsVM fragmentsVM;
-    MyListAdapter adapter;
+    ListAdapterTravel adapter;
     RecyclerView recyclerView;
     Context context;
     Button button;
@@ -75,7 +61,7 @@ public class RegisteredTravels extends Fragment {
 
                 Travel[] travelsArr = new Travel[travels.size()];
                 travels.toArray(travelsArr);
-                adapter = new MyListAdapter(travelsArr, context,requireActivity());
+                adapter = new ListAdapterTravel(travelsArr, context,requireActivity());
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(RegisteredTravels.this.getActivity()));
                 recyclerView.setAdapter(adapter);

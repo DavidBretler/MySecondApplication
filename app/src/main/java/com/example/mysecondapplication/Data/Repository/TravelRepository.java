@@ -41,6 +41,7 @@ public class TravelRepository implements ITravelRepository {
     private MutableLiveData<List<Travel>> HistoryTravels = new MutableLiveData<>();
     private List<Travel> travelList;
     private List<Travel> userTravelList;
+    List<Travel> historyTravelList;
     public FirebaseAuth mAuth;
     public FirebaseUser user;
     private Application application;
@@ -63,6 +64,7 @@ public class TravelRepository implements ITravelRepository {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         this.application = application;
+        List<Travel> historyTravelList=new  LinkedList<Travel>();
         IFBtravelDataSource.NotifyToTravelListListener notifyToTravelListListener = new IFBtravelDataSource.NotifyToTravelListListener() {
             @Override
             public void onTravelsChanged() {
@@ -73,8 +75,12 @@ public class TravelRepository implements ITravelRepository {
            //     findOpenTravelList();
                 findHistoryTravelList();
 
+                for (Travel t :travelList)
+                    if(!t.getRequestType().toString().equals("close"))
+                        historyTravelList.add(t);
+
                 iRMhistoryDataSource.clearTable();
-                iRMhistoryDataSource.addTravel(travelList);
+                iRMhistoryDataSource.addTravel(historyTravelList);
             }
         };
 
@@ -122,7 +128,7 @@ public class TravelRepository implements ITravelRepository {
                 temp1.setLongitude(t.getPickupAddress().getLon());
 
                 double  distance= temp.distanceTo(temp1);
-               Toast.makeText(this.application.getApplicationContext(), " dis is :" + distance, Toast.LENGTH_LONG).show();
+          //     Toast.makeText(this.application.getApplicationContext(), " dis is :" + distance, Toast.LENGTH_LONG).show();
             if(distance<maxDis)
               companyTravels.add(t);
 

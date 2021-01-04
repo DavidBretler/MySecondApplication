@@ -32,16 +32,15 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MyListAdapter  extends RecyclerView.Adapter<MyListAdapter.ViewHolder>  {
+public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.ViewHolder>  {
     private Travel[] listdata;
     Context context;
     Location location;
-    boolean flag=true;
     FragmentsVM fragmentsVM;
     FragmentActivity viewModelStore;
     public SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-    public MyListAdapter(Travel[] listdata, Context context, FragmentActivity viewModelStore) {
+    public ListAdapterTravel(Travel[] listdata, Context context, FragmentActivity viewModelStore) {
         this.listdata = listdata;
         this.context=context;
         this.viewModelStore=viewModelStore;
@@ -147,7 +146,7 @@ public class MyListAdapter  extends RecyclerView.Adapter<MyListAdapter.ViewHolde
             this.travelDateTextView =  itemView.findViewById(R.id.Txt_TravelDate);
             this.numOfPassengerTextView =  itemView.findViewById(R.id.Txt_numPassenger);
            this.spinner= (Spinner) itemView.findViewById(R.id.spinner);
-            relativeLayout = itemView.findViewById(R.id.relativeLayout);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout2);
         }
     }
     public String getPlace(Location location) {
