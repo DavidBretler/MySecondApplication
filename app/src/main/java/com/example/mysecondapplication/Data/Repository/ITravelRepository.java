@@ -20,4 +20,5 @@ public interface ITravelRepository {
     MutableLiveData<List<Travel>> getHistoryTravels();
 
     MutableLiveData<Boolean> getIsSuccess();
+    public String getUserEmail();
 }

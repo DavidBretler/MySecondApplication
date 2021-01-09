@@ -63,11 +63,15 @@ public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.Vi
         location.setLatitude(listdata[position].getPickupAddress().getLat());
         location.setLongitude(listdata[position].getPickupAddress().getLon());
 
-        String pickupAddres="";
+        String pickupAddres="",DetentionAddress="";
         pickupAddres =getPlace(location);
+        location.setLatitude(listdata[position].getDetentionAddress().getLat());
+        location.setLongitude(listdata[position].getDetentionAddress().getLon());
+        DetentionAddress=getPlace(location);
+
         final Travel myListData = listdata[position];
         holder.arrivalDateTextView.setText("Source : "+pickupAddres);
-        holder.travelDateTextView.setText("Destination: "+pickupAddres);
+        holder.travelDateTextView.setText("Destination: "+DetentionAddress);
         holder.numOfPassengerTextView.setText("start Date:"+format.format(listdata[position].getTravelDate()));
         ArrayAdapter<String> adapter= new ArrayAdapter<> (context ,android.R.layout.simple_spinner_item, new ArrayList<String>( listdata[position].getCompany().keySet()) )  ;
         holder.spinner.setAdapter(adapter);

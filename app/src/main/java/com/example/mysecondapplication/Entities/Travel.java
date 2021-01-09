@@ -34,16 +34,17 @@ public class Travel {
     @TypeConverters(UserLocationConverter.class)
     private UserLocation pickupAddress;
 
-//    @TypeConverters(UserLocationConverter.class)
-//    private UserLocation detentionAddress;
-//
-//    public UserLocation getDetentionAddress() {
-//        return detentionAddress;
-//    }
-//
-//    public void setDetentionAddress(UserLocation detentionAddress) {
-//        this.detentionAddress = detentionAddress;
-//    }
+
+    @TypeConverters(UserLocationConverter.class)
+    private UserLocation detentionAddress;
+
+    public UserLocation getDetentionAddress() {
+        return detentionAddress;
+    }
+
+    public void setDetentionAddress(UserLocation detentionAddress) {
+        this.detentionAddress = detentionAddress;
+    }
 
     @TypeConverters(RequestType.class)
     private RequestType requestType=RequestType.sent;

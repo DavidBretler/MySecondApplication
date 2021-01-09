@@ -39,7 +39,6 @@ public class CompanyTravels extends Fragment {
     double curLatitude;
     double curLongitude;
     Context contex;
-    Button button;
     RecyclerView recyclerView;
     ListAdapterCompany adapter;
     public List<Travel> Travels;

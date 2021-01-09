@@ -28,7 +28,6 @@ import java.util.List;
 
 
 public class HistoryTravels extends Fragment {
-    public FirebaseAuth mAuth;
     private FragmentsVM fragmentsVM;
     Context context;
     RecyclerView recyclerView;
@@ -40,9 +39,8 @@ public class HistoryTravels extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         fragmentsVM = new ViewModelProvider(this).get(FragmentsVM.class);
         View root = inflater.inflate(R.layout.fragment_history_travels, container, false);
-        mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser user = mAuth.getCurrentUser();
-            checkOwner(user.getEmail());
+
+            checkOwner(fragmentsVM.getUserEmail());
         context =HistoryTravels.this.getActivity().getBaseContext();
         recyclerView = (RecyclerView) root.findViewById(R.id.list_travel_history);
         //make lines between layout in list
@@ -66,7 +64,7 @@ public class HistoryTravels extends Fragment {
 
         return root;
     }
-
+    // make sure that only the manger of app will see this data-owner credentials are stored in recourse
     private void checkOwner(String email) {
         if(!email.equals(getString(R.string.owner_Email)) ) {
             Toast.makeText(getActivity(), "only Owner can access this information " , Toast.LENGTH_SHORT).show();

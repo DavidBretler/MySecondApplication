@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -34,8 +33,8 @@ public class RegisteredTravels extends Fragment {
     public List<Travel> Travels;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        fragmentsVM =
-                new ViewModelProvider(this).get(FragmentsVM.class);
+
+        fragmentsVM = new ViewModelProvider(this).get(FragmentsVM.class);
 
         View root = inflater.inflate(R.layout.fragment_registered_travels, container, false);
 
@@ -49,7 +48,7 @@ public class RegisteredTravels extends Fragment {
 
  //       }
         context =RegisteredTravels.this.getActivity().getBaseContext();
-        recyclerView = (RecyclerView) root.findViewById(R.id.user_travel_recyclerView);
+        recyclerView = (RecyclerView) root.findViewById(R.id.company_travel_recyclerView);
         //make lines between layout in the grafic list
         DividerItemDecoration itemDecor = new DividerItemDecoration(RegisteredTravels.this.getActivity(),1);
         recyclerView.addItemDecoration(itemDecor);

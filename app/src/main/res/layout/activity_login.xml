@@ -74,14 +74,26 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/Txt_welcome2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="15dp"
+        android:text="welcome !!"
+        android:textColor="#07145E"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/Txt_welcome"
-        android:layout_width="325dp"
-        android:layout_height="106dp"
+        android:layout_width="322dp"
+        android:layout_height="75dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:text="                      welcome !!
-                                         you are in the  best app to find a ride or offer your company ride services"
+        android:layout_marginTop="70dp"
+        android:text="you are in the  best app to find a ride or offer your company ride services"
         android:textSize="20dp"
+        android:visibility="invisible"
         android:textStyle="bold" />
 
     <Button

@@ -5,6 +5,7 @@
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/relativeLayout"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -17,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:text="TextView"
+        android:textColor="@color/black"
         android:textStyle="bold" />
 
     <TextView
@@ -24,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:layout_marginTop="30dp"
+        android:textColor="@color/black"
         android:text="TextView"
         android:textStyle="bold" />
 
@@ -32,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:layout_marginTop="60dp"
+        android:textColor="@color/black"
         android:text="TextView"
         android:textStyle="bold" />
 
@@ -43,7 +47,8 @@
         android:layout_marginTop="100dp"
         android:text="change\n to Run"
         android:textSize="8dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:backgroundTint="#2196F3" />
 
     <Button
         android:id="@+id/Btn_changeToClose"
@@ -54,7 +59,8 @@
         android:layout_marginTop="100dp"
         android:text="change\n to close"
         android:textSize="8dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:backgroundTint="#2196F3" />
 
     <Button
         android:id="@+id/Btn_approveCompany"
@@ -65,7 +71,8 @@
         android:layout_marginTop="100dp"
         android:text="approve\n Company"
         android:textSize="8dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:backgroundTint="#2196F3" />
 
     <Spinner
         android:id="@+id/spinner"

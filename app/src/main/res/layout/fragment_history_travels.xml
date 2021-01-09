@@ -5,7 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.Fragments.HistoryTravels">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="431dp"
+        android:layout_marginTop="300dp"
+        android:background="@drawable/roadonearth"
+        android:orientation="horizontal"></LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_travel_history"
         android:layout_width="match_parent"

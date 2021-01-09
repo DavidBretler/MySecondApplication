@@ -1,14 +1,13 @@
 package com.example.mysecondapplication.UI.NavigationDrawer;
 
-import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,8 +27,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -50,7 +51,7 @@ public class NavigationDrawer extends AppCompatActivity {
     private FragmentsVM fragmentsVM;
     RegisteredTravels registeredTravels;
     LocationManager locationManager;
-    Location location;
+
     LocationListener locationListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,19 @@ public class NavigationDrawer extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        Intent intent=new Intent(NavigationDrawer.this, myService.class);
+        //intent.putExtra("SENDER_CLASS_NAME", this);
+        stopService(intent);
 
+        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
+//        intentFilter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
+//        intentFilter.addAction(Intent.ACTION_TIME_CHANGED);
+       // intentFilter.addAction(Intent.ACTION_TIME_TICK);
+        intentFilter.addAction("com.javacodegeeks.android.A_CUSTOM_INTENT");
+        registerReceiver(new MyBroadcastReceiver(), intentFilter);
+
+        startService(new Intent(NavigationDrawer.this, myService.class));
 
          registeredTravels =new RegisteredTravels();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -94,7 +107,7 @@ public class NavigationDrawer extends AppCompatActivity {
          Txt_welcomeUser= findViewById(R.id.Txt_welcome_user);
          Txt_welcomeUser.setText("welcome user: " + email);
 
-       checkdate();
+     //    checkdate();
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
@@ -104,50 +117,18 @@ public class NavigationDrawer extends AppCompatActivity {
                 double curLatitude = location.getLatitude();
                 double curLongitude = location.getLongitude();
             }
-
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            public void onProviderEnabled(String provider) {
-            }
-
-            public void onProviderDisabled(String provider) {
-            }
+            public void onStatusChanged(String provider, int status, Bundle extras) { }
+            public void onProviderEnabled(String provider) { }
+            public void onProviderDisabled(String provider) { }
         };
 
-        getLocation();
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-//                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this , Manifest.permission.ACCESS_COARSE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            // return TODO;
-//        }
-
- //        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
-
+public ViewModelStoreOwner getself(){return  NavigationDrawer.this;}
 
     public void checkdate () {
 
         fragmentsVM = new ViewModelProvider(this).get(FragmentsVM.class);
 
-//        fragmentsVM.getOpenTravels().observe(this, new Observer<List<Travel>>() {
-//            @Override
-//            public void onChanged(List<Travel> travels) {
-//                for (Travel tmp : travels) {
-//                    Log.e("test", tmp.getClientName() + ":  ");
-//                    //https://www.callicoder.com/java-hashmap/
-//                    //HashMap is a hash table based implementation of Java’s Map interface
-//                    Iterator it = tmp.getCompany().entrySet().iterator();
-//                    while (it.hasNext()) {
-//                        Map.Entry pair = (Map.Entry) it.next();
-//                        System.out.println("HashMap:  " + pair.getKey() + " = " + pair.getValue());
-//
-//                    }
-//                }
-//            }
-//        });
 
         fragmentsVM.getIsSuccess().observe(this, new Observer<Boolean>() {
             @Override
@@ -186,20 +167,20 @@ public class NavigationDrawer extends AppCompatActivity {
 //                navigationDrawerVM.updateTravel(travel1);
 
                 Travel travel2 = new Travel();
-                travel2.setClientName("abi");
+                travel2.setClientName("new gay");
                 travel2.setClientPhone("026334512");
                 travel2.setClientEmail("ddkill8@gmail.com");
                 travel2.setPickupAddress(new UserLocation(	31.934466609645973, 35.02629946297578));
-             //   travel2.setDetentionAddress(new UserLocation(15.0, 25.0));
+                travel2.setDetentionAddress(new UserLocation(31.776873932302315, 35.23451923131213));
                 travel2.setTravelDate(tDate);
                 travel2.setArrivalDate(tDate2);
-                travel2.setRequestType(Travel.RequestType.close);
+                travel2.setRequestType(Travel.RequestType.sent);
                 travel2.setCompany(new HashMap<String, Boolean>());
                 travel2.getCompany().put("Egged",Boolean.FALSE);
                 travel2.getCompany().put("TsirTour",Boolean.FALSE);
                 travel2.setVIPBUS(true);
 
-      //         fragmentsVM.addTravel(travel2);
+               fragmentsVM.addTravel(travel2);
 
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -224,7 +205,10 @@ public class NavigationDrawer extends AppCompatActivity {
     public void helpmassege(MenuItem item) {//open Dialog with help instructions
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
         dlgAlert.setTitle("instructions");
-        dlgAlert.setMessage("if you want to see ...");
+        dlgAlert.setMessage("hello,\n" +
+                "\ncustomer- you will be able to see your travels and confirm companies that have offered themselves for the trip.\n" +
+                "\nshuttle company - you can see the open trips in your area and offer your services to them.\n" +
+                "\napp manager - you can see the trips that ended and did not pay for the app and contact them.");
         dlgAlert.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) { }    } );
         dlgAlert.setCancelable(true);
@@ -278,17 +262,4 @@ public class NavigationDrawer extends AppCompatActivity {
 
     }
 
-    public void getLocation() {
-
-        //     Check the SDK version and whether the permission is already granted or not.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 5);
-
-        } else {
-            // Android version is lesser than 6.0 or the permission is already granted.
-
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        }
-
-    }
 }

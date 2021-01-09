@@ -38,8 +38,6 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
     Location location;
     FragmentsVM fragmentsVM;
     FragmentActivity viewModelStore;
-    public FirebaseAuth mAuth;
-    FirebaseUser user;
     String companyName="";
     public SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -56,9 +54,8 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
         View listItem= layoutInflater.inflate(R.layout.company_layout, parent, false);
         ViewHolder viewHolder = new ViewHolder(listItem);
         fragmentsVM = new ViewModelProvider(viewModelStore).get(FragmentsVM.class);
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        companyName=user.getEmail().split("@")[0];
+
+        companyName=fragmentsVM.getUserEmail().split("@")[0];
         return viewHolder;
     }
 
@@ -68,12 +65,17 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
         location.setLatitude(listdata[position].getPickupAddress().getLat());
         location.setLongitude(listdata[position].getPickupAddress().getLon());
 
-        String pickupAddres="";
+        String pickupAddres="",DetentionAddress="";
         pickupAddres =getPlace(location);
+        pickupAddres =getPlace(location);
+        location.setLatitude(listdata[position].getDetentionAddress().getLat());
+        location.setLongitude(listdata[position].getDetentionAddress().getLon());
+        DetentionAddress=getPlace(location);
+
         final Travel myListData = listdata[position];
         holder.Txt_sourceAddress.setText("Source : "+pickupAddres);
-        holder.Txt_destAddress.setText("Destination: "+pickupAddres);
-        holder.Txt_numOfPassenger.setText("passengers: "+myListData.getNumOfPassenger());
+        holder.Txt_destAddress.setText("Destination: "+DetentionAddress);
+        holder.Txt_numOfPassenger.setText("passengers:\n      "+myListData.getNumOfPassenger());
         holder.Txt_travelDate.setText("start Date:"+format.format(myListData.getTravelDate()));
         holder.Txt_name.setText("name:"+myListData.getClientName());
         if(myListData.getCompany().get(companyName)!=null && myListData.getCompany().get(companyName))

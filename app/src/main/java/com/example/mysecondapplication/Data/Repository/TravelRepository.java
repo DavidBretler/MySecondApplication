@@ -31,14 +31,12 @@ public class TravelRepository implements ITravelRepository {
     private MutableLiveData<List<Travel>> HistoryTravels = new MutableLiveData<>();
     private List<Travel> travelList;
     private List<Travel> userTravelList;
-    List<Travel> historyTravelList;
+
     public FirebaseAuth mAuth;
     public FirebaseUser user;
     private Application application;
     private MutableLiveData<List<Travel>> AllTravels = new MutableLiveData<>();
-    Location location;
-    LocationManager locationManager;
-    GPS gps;
+
     private static TravelRepository instance;
     NavigationDrawer navigationDrawer;
     public static TravelRepository getInstance(Application application) {
@@ -66,8 +64,8 @@ public class TravelRepository implements ITravelRepository {
 
                 findUserTravelList();
            //     findOpenTravelList();
-           //     findHistoryTravelList();
-              //puse all close travel to the room
+
+              //push all close travel to the room
                 for (Travel t :travelList)
                     if(t.getRequestType().toString().equals("close"))
                         historyTravelList.add(t);
@@ -90,13 +88,14 @@ public class TravelRepository implements ITravelRepository {
         });
 
     }
-
+    public String getUserEmail(){return  user.getEmail();}
     public void findUserTravelList() {
         //find the connected user travel list
         userTravelList = new LinkedList<Travel>();
         String UserEmail = user.getEmail();
         for (Travel t : travelList)
-            if (t.getClientEmail().equals(UserEmail) && t.getRequestType() != Travel.RequestType.close)
+            if (t.getClientEmail().equals(UserEmail) && t.getRequestType() != Travel.RequestType.close
+                    && t.getRequestType() != Travel.RequestType.payed)
                 userTravelList.add(t);
         UserTravels.setValue(userTravelList);
     }
@@ -125,21 +124,6 @@ public class TravelRepository implements ITravelRepository {
             }
         }
         openTravels.setValue(companyTravels);
-    }
-    public void findHistoryTravelList() {
-        // TODO: 30/12/2020
-//        LiveData<List<Travel>> travelList = new MutableLiveData<>();
-//        LiveData<List<Travel>> travelList1 = new MutableLiveData<>();
-//        travelList = iRMhistoryDataSource.getTravels();
-//        Object o = travelList.getValue();
-        //        Transformations.
-        //       List<Travel> historyTravelList=new  LinkedList<Travel>();
-
-//        for (Travel t :historyTravelList)
-//        if(!t.getRequestType().toString().equals("close"))
-//            historyTravelList.remove(t);
-
-
     }
 
     @Override

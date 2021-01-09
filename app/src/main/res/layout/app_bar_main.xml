@@ -37,6 +37,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="60dp"
         android:text="TextView"
+        android:textColor="@color/black"
         android:textSize="25dp"
         android:textStyle="bold" />
 
@@ -46,5 +47,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword" />
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

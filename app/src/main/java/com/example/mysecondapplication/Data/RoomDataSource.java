@@ -15,7 +15,7 @@ import com.example.mysecondapplication.Entities.Travel;
         , Travel.CompanyConverter.class})
 public abstract class RoomDataSource extends RoomDatabase {
 
-    public static final String DATABASE_NAME="Mydatabase";
+    public static final String DATABASE_NAME="Mydatabase1";
     private static RoomDataSource database;
 
     public static RoomDataSource getInstance(Context context){

@@ -44,8 +44,13 @@ public class FragmentsVM extends AndroidViewModel {
     {
         return (MutableLiveData<List<Travel>>) repository.getOpenTravels(lat,lon,maxDis);
     }
+  public MutableLiveData<List<Travel>> getallTravels(double lat, double lon,int maxDis)
+  {
+    return (MutableLiveData<List<Travel>>) repository.getAllTravels();
+  }
 
-    public MutableLiveData<List<Travel>> getUserTravels()
+
+  public MutableLiveData<List<Travel>> getUserTravels()
     {
 
         return  repository.getUserTravels();
@@ -59,4 +64,5 @@ public class FragmentsVM extends AndroidViewModel {
     {
         return repository.getIsSuccess();
     }
+    public String getUserEmail(){return repository.getUserEmail();}
 }

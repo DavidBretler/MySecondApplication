@@ -130,8 +130,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 {
                                   //  Toast.makeText(getApplicationContext(), "email verifid Successfuly", Toast.LENGTH_SHORT).show();
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(LoginActivity.this, "Sign In Successful",
-                                                Toast.LENGTH_SHORT).show();
+                                      //  Toast.makeText(LoginActivity.this, "Sign In Successful",
+                                     //           Toast.LENGTH_SHORT).show();
                                         goToNavigationDrawer(email);
 
                                     } else {
