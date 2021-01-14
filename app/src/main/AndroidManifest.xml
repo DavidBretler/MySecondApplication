@@ -30,6 +30,15 @@
         </activity>
         <service android:name="com.example.mysecondapplication.UI.NavigationDrawer.myService">
         </service>
+        <receiver android:name=".UI.NavigationDrawer.MyBroadcastReceiver">
+            <intent-filter
+                android:enabled="true"
+                android:exported="true">
+                <action android:name="com.javacodegeeks.android.A_CUSTOM_INTENT"/>
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>

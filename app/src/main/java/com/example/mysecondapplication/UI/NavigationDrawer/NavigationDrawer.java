@@ -72,9 +72,9 @@ public class NavigationDrawer extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        Intent intent=new Intent(NavigationDrawer.this, myService.class);
+      //  Intent intent=new Intent(NavigationDrawer.this, myService.class);
         //intent.putExtra("SENDER_CLASS_NAME", this);
-        stopService(intent);
+     //   stopService(intent);
 
         IntentFilter intentFilter = new IntentFilter();
 //        intentFilter.addAction(Intent.ACTION_DATE_CHANGED);

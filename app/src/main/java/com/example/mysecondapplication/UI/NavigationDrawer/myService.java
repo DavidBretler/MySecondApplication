@@ -33,20 +33,16 @@ public class myService extends Service {
     Integer sum = 0;
     boolean isThreadOn = false;
     public final String TAG = "myService";
-    FragmentsVM fragmentsVM;
     NavigationDrawer navigationDrawer;
     ITravelRepository repository;
     private  List<Travel> travelList;
     int travelsNum=-1;
+
     @Override
     public void onCreate() {
         super.onCreate();
-   //     Toast.makeText(this,"onCreate", Toast.LENGTH_LONG).show();
         repository = TravelRepository.getInstance(getApplication());
         navigationDrawer=new NavigationDrawer();
-
-//        fragmentsVM = new ViewModelProvider(navigationDrawer.getself()).get(FragmentsVM.class);
-
     }
 
     @Override
@@ -59,7 +55,7 @@ public class myService extends Service {
                 @Override
                 public void onChanged(List<Travel> travels) {
                     travelList=new LinkedList<>(travels);
-                    if(travelsNum!=-1 && travelsNum!=travelList.size())//change to <
+                    if(travelsNum!=-1 && travelsNum!=travelList.size()) // TODO: 09/01/2021  change to <
                     {
                         intent2.putExtra("message", "new travel added");
                         intent2.setAction("com.javacodegeeks.android.A_CUSTOM_INTENT");

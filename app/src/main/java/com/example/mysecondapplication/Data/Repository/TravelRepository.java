@@ -77,6 +77,7 @@ public class TravelRepository implements ITravelRepository {
         // make sure we react to changes in the firebase
         iFBtravelDataSource.setNotifyToTravelListListener(notifyToTravelListListener);
 
+        //get the date from the room
         iRMhistoryDataSource.getTravels().observeForever(new Observer<List<Travel>>()  {
             @Override
             public void onChanged(List<Travel> historyTravelList) {
@@ -151,7 +152,6 @@ public class TravelRepository implements ITravelRepository {
     // when  dis is less then maxDis from picapp address
     //return the mutable live data that observ from the fragments view model
     public MutableLiveData<List<Travel>> getOpenTravels(double lat ,double lon,int maxDis) {
-        // TODO: 04/01/2021 check if good
         findOpenTravelList(lat,lon,maxDis);
 
         return openTravels;
