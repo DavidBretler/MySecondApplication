@@ -18,23 +18,28 @@ import androidx.annotation.RequiresApi;
 import com.example.mysecondapplication.R;
 import com.example.mysecondapplication.UI.Login_Activity.LoginActivity;
 
+/**
+ * Receiver to get the Broadcast from the service when even if app in the background
+ */
 public class MyBroadcastReceiver extends BroadcastReceiver {
 Context context;
     @RequiresApi(api = Build.VERSION_CODES.O)
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO Auto-generated method stub
-this.context=context;
+
+        this.context=context;
         // Extract data included in the Intent
         CharSequence intentData = intent.getCharSequenceExtra("message");
-       // Toast.makeText(context, "Javacodegeeks received the Intent's message: "+intentData, Toast.LENGTH_LONG).show();
+
          if(intent.getAction().matches("com.javacodegeeks.android.A_CUSTOM_INTENT"))
-         {
-        //    Toast.makeText(context, "A_CUSTOM_INTENT addNotification", Toast.LENGTH_LONG).show();
              addNotification();
-         }
+
     }
 
+    /**
+     * send Notification when new travel has added
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void addNotification() {
 

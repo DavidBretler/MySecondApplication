@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mysecondapplication.Entities.Travel;
-import com.example.mysecondapplication.R;
+import com.example.mysecondapplication.*;
 import com.example.mysecondapplication.UI.Fragments.FragmentsVM;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,7 +28,9 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-
+/**
+ * show all the closed travel request  -  need to pay to app owner
+ */
     public class ListAdpterHistory extends RecyclerView.Adapter<com.example.mysecondapplication.UI.recyclerView.ListAdpterHistory.ViewHolder>
     {
         private Travel[] listdata;
@@ -46,7 +48,13 @@ import java.util.HashMap;
             this.viewModelStore=viewModelStore;
         }
 
-
+        /**
+         * connect the ViewHolder to the wanted layout
+         * create instance of fragmentsVM
+         * @param parent the view group that the view will be added to
+         * @param viewType type of view
+         * @return the view Holder
+         */
         @Override
         public  ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -58,7 +66,11 @@ import java.util.HashMap;
             return viewHolder;
         }
 
-
+        /**
+         * @param holder hold the wanted layout and graphic objects
+         * @param position holds the current position in list
+         * insert all the wanted data from the travel to the  graphic objects
+         */
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             location = new Location(LocationManager.GPS_PROVIDER);
@@ -72,7 +84,7 @@ import java.util.HashMap;
             long diff = myListData.getArrivalDate().getTime() - myListData.getTravelDate().getTime();
             holder.Txt_numDaysRide.setText("num of days: "+diff / (1000 * 60 * 60 * 24));
 
-
+            // send Mail to the company to request commission
             holder.Btn_sendEmail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -86,6 +98,7 @@ import java.util.HashMap;
                     sendMail(email);
                 }
             });
+            //updates the travel status to payed
             holder.Btn_CompanyPayd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,12 +108,16 @@ import java.util.HashMap;
                 }
             });
         }
-
+        /**
+         * @return number of items
+         */
         @Override
         public int getItemCount() {
             return listdata.length;
         }
-
+        /**
+         * linking the graphic objects to the fields in Travel
+         */
         public static class ViewHolder extends RecyclerView.ViewHolder {
              TextView Txt_name;
              TextView Txt_numDaysRide;
@@ -117,7 +134,10 @@ import java.util.HashMap;
                 this.relativeLayout = itemView.findViewById(R.id.relativeLayout3);
             }
         }
-
+        /**
+         * send a email to client using intent with default message
+         * @param email email address of client
+         */
         private void sendMail(String email) {
             String  recipientList = email;
             String[] recipients = recipientList.split(",");

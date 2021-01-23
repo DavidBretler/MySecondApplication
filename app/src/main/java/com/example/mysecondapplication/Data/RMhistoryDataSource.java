@@ -10,6 +10,9 @@ import com.example.mysecondapplication.Entities.Travel;
 
 import java.util.List;
 
+/**
+ * extracts info from ROOM via Travel deo
+ */
 public class RMhistoryDataSource implements IRMhistoryDataSource {
     private TravelDao travelDao;
 

@@ -22,8 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.R;
 import com.example.mysecondapplication.UI.Fragments.FragmentsVM;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -31,23 +29,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-
+/**
+ * enter the list of  travels that relevant to the company to a graphic object
+ */
 public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.ViewHolder>  {
     private Travel[] listdata;
-    Context context;
+    Context context; // the contex of the calling activity
     Location location;
     FragmentsVM fragmentsVM;
-    FragmentActivity viewModelStore;
+    FragmentActivity viewModelStore; // the FragmentActivity
     String companyName="";
     public SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
+    //constructor
     public ListAdapterCompany(Travel[] listdata, Context context, FragmentActivity viewModelStore) {
         this.listdata = listdata;
         this.context=context;
         this.viewModelStore=viewModelStore;
     }
 
-
+    /**
+     * connect the ViewHolder to the wanted layout
+     * create instance of fragmentsVM
+     * @param parent the view group that the view will be added to
+     * @param viewType type of view
+     * @return
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -59,8 +66,15 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
         return viewHolder;
     }
 
+    /**
+     *
+     * @param holder hold the wanted layout and graphic objects
+     * @param position holds the current position in list
+     * insert all the wanted data from the travel to the  graphic objects
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        //create location of Pickup Address and destination Address
         location = new Location(LocationManager.GPS_PROVIDER);
         location.setLatitude(listdata[position].getPickupAddress().getLat());
         location.setLongitude(listdata[position].getPickupAddress().getLon());
@@ -79,15 +93,16 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
         holder.Txt_travelDate.setText("start Date:"+format.format(myListData.getTravelDate()));
         holder.Txt_name.setText("name:"+myListData.getClientName());
         if(myListData.getCompany().get(companyName)!=null && myListData.getCompany().get(companyName))
-        holder.relativeLayout.setBackgroundColor(Color.GREEN);
-
+        holder.relativeLayout.setBackgroundColor(Color.GREEN);//if the client approves the travel it will change the background to green
+         //send email to client on button click
         holder.Btn_sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
           sendMail(myListData.getClientEmail());
             }
         });
-        holder.Btn_AprroveCompany.setOnClickListener(new View.OnClickListener() {
+        //offer your service for a specific travel to client
+        holder.Btn_sendTravelRequset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashMap<String, Boolean> company=new HashMap<>();
@@ -108,11 +123,15 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
 
     }
 
+    /**
+     * @return number of items
+     */
     @Override
-    public int getItemCount() {
-        return listdata.length;
-    }
+    public int getItemCount() { return listdata.length; }
 
+    /**
+     * linking the graphic objects to the fields in Travel
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView Txt_name;
         TextView Txt_travelDate;
@@ -120,8 +139,9 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
         TextView Txt_sourceAddress;
         TextView Txt_destAddress;
         Button Btn_sendEmail;
-        Button Btn_AprroveCompany;
+        Button Btn_sendTravelRequset;
         RelativeLayout relativeLayout;
+        //constructor
         public ViewHolder(View itemView) {
             super(itemView);
             this.Txt_name =  itemView.findViewById(R.id.Txt_name2);
@@ -130,11 +150,17 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
             this.Txt_sourceAddress= itemView.findViewById(R.id.Txt_sourceAdress);
             this.Txt_destAddress=itemView.findViewById(R.id.Txt_desAdress);
             this.Btn_sendEmail =  itemView.findViewById(R.id.Btn_sendEmail2);
-            this.Btn_AprroveCompany =  itemView.findViewById(R.id.Btn_compantPayd);
+            this.Btn_sendTravelRequset =  itemView.findViewById(R.id.Btn_compantPayd);
 
             relativeLayout = itemView.findViewById(R.id.relativeLayout3);
         }
     }
+
+    /**
+     * convert location to address
+     * @param location a instance holding latitude and longitude
+     * @return string address of location
+     */
     public String getPlace(Location location) {
         String cityName="" ;
         String stateName="";
@@ -164,6 +190,11 @@ public class ListAdapterCompany extends RecyclerView.Adapter<ListAdapterCompany.
         }
         return "IOException ...";
     }
+
+    /**
+     * send a email to client using intent with default message
+     * @param email email address of client
+     */
     private void sendMail(String email) {
         String  recipientList =email;
         String[] recipients = recipientList.split(",");

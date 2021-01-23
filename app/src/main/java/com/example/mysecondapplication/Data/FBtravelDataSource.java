@@ -19,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * gets the info from firebase to app and from app to firebase
+ */
 public class FBtravelDataSource implements IFBtravelDataSource {
 
     private static final String TAG = "Firebase";
@@ -46,6 +49,7 @@ public class FBtravelDataSource implements IFBtravelDataSource {
         allTravelsList = new ArrayList<>();
         travels.addValueEventListener(new ValueEventListener() {
             @Override
+            //listener to changes in firebase
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allTravelsList.clear();
                 if (dataSnapshot.exists()) {

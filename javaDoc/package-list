@@ -1,0 +1,8 @@
+Utils
+com.example.mysecondapplication.Data
+com.example.mysecondapplication.Data.Repository
+com.example.mysecondapplication.Entities
+com.example.mysecondapplication.UI.Fragments
+com.example.mysecondapplication.UI.Login_Activity
+com.example.mysecondapplication.UI.NavigationDrawer
+com.example.mysecondapplication.UI.recyclerView

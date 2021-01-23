@@ -7,6 +7,10 @@ import com.example.mysecondapplication.Entities.Travel;
 
 import java.util.List;
 
+/**
+ * interface for travel repository to enable us to change data source
+ * design by contract
+ */
 public interface ITravelRepository {
 
     void addTravel(Travel travel);

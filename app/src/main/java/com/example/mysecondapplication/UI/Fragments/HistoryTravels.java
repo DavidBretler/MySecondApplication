@@ -26,7 +26,9 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * the  fragment displayes to owner of the app all the travels that are closed
+ */
 public class HistoryTravels extends Fragment {
     private FragmentsVM fragmentsVM;
     Context context;
@@ -34,13 +36,20 @@ public class HistoryTravels extends Fragment {
     ListAdpterHistory adapter;
     public List<Travel> Travels;
 
-
+    /**
+     * the on create is activted whean opening history trvel fragment
+     * only alwoes owner off app to enter
+     * @param inflater xml object
+     * @param container contains other views
+     * @param savedInstanceState maping from string to parcble
+     * @return the root that contain the inflater and the container
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         fragmentsVM = new ViewModelProvider(this).get(FragmentsVM.class);
         View root = inflater.inflate(R.layout.fragment_history_travels, container, false);
 
-            checkOwner(fragmentsVM.getUserEmail());
+        checkOwner(fragmentsVM.getUserEmail());
         context =HistoryTravels.this.getActivity().getBaseContext();
         recyclerView = (RecyclerView) root.findViewById(R.id.list_travel_history);
         //make lines between layout in list
@@ -50,6 +59,10 @@ public class HistoryTravels extends Fragment {
 
 
         fragmentsVM.gethistoryTravels().observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
+            /**
+             * every change to the travel list in fire base will activate this func
+             * @param travels -the updated list of travels
+             */
             @Override
             public void onChanged(List<Travel> travels) {
                 Travels=new LinkedList<>(travels);
@@ -64,7 +77,11 @@ public class HistoryTravels extends Fragment {
 
         return root;
     }
-    // make sure that only the manger of app will see this data-owner credentials are stored in recourse
+
+    /**
+     *   verify that only the manger of app will see this data-owner credentials are stored in recourse
+     * @param email a string containg the of the user trying to access the fragment
+     */
     private void checkOwner(String email) {
         if(!email.equals(getString(R.string.owner_Email)) ) {
             Toast.makeText(getActivity(), "only Owner can access this information " , Toast.LENGTH_SHORT).show();

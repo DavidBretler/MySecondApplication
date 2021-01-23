@@ -3,7 +3,10 @@ package com.example.mysecondapplication.Entities;
 import android.location.Location;
 
 
-
+/**
+ * object holding location
+ * with only 2 attributes
+ */
 public class UserLocation {
     private Double lat;
     private Double lon;

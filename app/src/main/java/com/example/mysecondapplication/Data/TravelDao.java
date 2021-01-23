@@ -13,6 +13,9 @@ import com.example.mysecondapplication.Entities.Travel;
 
 import java.util.List;
 
+/**
+ * enables to get data from room using SQL query's
+ */
 @Dao
 public interface TravelDao {
 

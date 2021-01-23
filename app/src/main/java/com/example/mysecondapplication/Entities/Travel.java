@@ -20,7 +20,9 @@ import android.app.Application;
 
 @Entity (tableName = "travels")
 
-
+/**
+ * travel entity holds all travel info
+ */
 public class Travel {
 
     /////////////FIELDS
@@ -110,8 +112,8 @@ public class Travel {
     public void setVIPBUS(boolean VIPBUS) { this.VIPBUS = VIPBUS; }
 
     public void setCompany(HashMap<String, Boolean> company) { this.company = company; }
-
-    public Travel(String clientName,String clientName2, String clientPhone, String clientEmail, Date departingDate, Date returnDate
+//constructor
+    public Travel(String clientName, String clientPhone, String clientEmail, Date departingDate, Date returnDate
             ,int numOfPassenger,UserLocation  pickupAddress , UserLocation destAddress,RequestType requestType,boolean VIPBUS, HashMap<String, Boolean> company) {
         this.clientName = clientName;
         this.clientPhone = clientPhone;
@@ -120,32 +122,19 @@ public class Travel {
         this.arrivalDate = returnDate;
         this.numOfPassenger=numOfPassenger;
         this.pickupAddress=pickupAddress;
-  //      this.detentionAddress = destAddress;
+        this.detentionAddress = destAddress;
         this.requestType=requestType;
         this.VIPBUS=VIPBUS;
         this.company = company;
     }
-
+    //empty constructor
     public  Travel(){}
 
 
 
 
-    public static class DateConverter {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-        @TypeConverter
-        public Date fromTimestamp(String date) throws ParseException {
-            return (date == null ? null : format.parse(date));
-        }
-
-        @TypeConverter
-        public String dateToTimestamp(Date date) {
-            return date == null ? null : format.format(date);
-        }
-    }
-
-
+    /////ENUM
     public enum RequestType {
         sent(0), accepted(1), run(2), close(3),payed(4);
         private final Integer code;
@@ -167,6 +156,20 @@ public class Travel {
             if (requestType != null)
                 return requestType.code;
             return null;
+        }
+    }
+    ///////converters for ROOM
+    public static class DateConverter {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        @TypeConverter
+        public Date fromTimestamp(String date) throws ParseException {
+            return (date == null ? null : format.parse(date));
+        }
+
+        @TypeConverter
+        public String dateToTimestamp(Date date) {
+            return date == null ? null : format.format(date);
         }
     }
 
@@ -200,42 +203,39 @@ public class Travel {
     }
 //
     public static class ListuserlocConverter {
-//        UserLocationConverter userLocationConverter;
+        UserLocationConverter userLocationConverter;
         @TypeConverter
         public String ListToString(List<UserLocation> list) {
-//            userLocationConverter =new  Travel.UserLocationConverter();
-//            if (list == null )
-//                return null;
-//            StringBuilder listString = new StringBuilder();
-//
-//            for (UserLocation loc : list) {
-//                listString.append(userLocationConverter.asString(loc)).append(",");
-//            }
-//            return listString.toString() ;
-            return "kuku";
+            userLocationConverter =new  Travel.UserLocationConverter();
+            if (list == null )
+                return null;
+            StringBuilder listString = new StringBuilder();
+
+            for (UserLocation loc : list) {
+                listString.append(userLocationConverter.asString(loc)).append(",");
+            }
+            return listString.toString() ;
+
         }
 
         @TypeConverter
         public List<UserLocation> StringToList(String value) {
-//            if (value == null || value.isEmpty())
-//                return null;
-//            String[] listString = value.split(","); //split list into array of strings
+            if (value == null || value.isEmpty())
+                return null;
+            String[] listString = value.split(","); //split list into array of strings
             List<UserLocation> list = new ArrayList<UserLocation>();
             list.add(new UserLocation(10,20));
 
-//            for (String s1 : listString) //for all (string,boolean) in the map string
-//                if (!s1.isEmpty()) //is empty maybe will needed because the last char in the string is ","
-//                {
-//
-//                    list.add(userLocationConverter.fromString(s1)); //user location
-//                }
+            for (String s1 : listString) //for all (string,boolean) in the map string
+                if (!s1.isEmpty()) //is empty maybe will needed because the last char in the string is ","
+                {
+                    list.add(userLocationConverter.fromString(s1)); //user location
+                }
             return list;
         }
 
     }
-
     public static class UserLocationConverter extends Application {
-
         @TypeConverter
         public UserLocation fromString(String value) {
             if (value == null || value.equals(""))

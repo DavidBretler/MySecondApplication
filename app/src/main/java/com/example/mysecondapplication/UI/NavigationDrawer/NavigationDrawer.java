@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.mysecondapplication.Entities.Travel;
 import com.example.mysecondapplication.Entities.UserLocation;
-import com.example.mysecondapplication.R;
+import com.example.mysecondapplication.*;
 import com.example.mysecondapplication.UI.Fragments.FragmentsVM;
 import com.example.mysecondapplication.UI.Fragments.RegisteredTravels;
 import com.example.mysecondapplication.UI.Login_Activity.LoginActivity;
@@ -42,6 +42,9 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * tha main screen that can go to all the fragments
+ */
 public class NavigationDrawer extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -51,9 +54,11 @@ public class NavigationDrawer extends AppCompatActivity {
     private FragmentsVM fragmentsVM;
     RegisteredTravels registeredTravels;
     LocationManager locationManager;
-
     LocationListener locationListener;
     @Override
+    /**
+     * set the view of the screen to the user
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_drawer);
@@ -72,15 +77,9 @@ public class NavigationDrawer extends AppCompatActivity {
                 startActivity(i);
             }
         });
-      //  Intent intent=new Intent(NavigationDrawer.this, myService.class);
-        //intent.putExtra("SENDER_CLASS_NAME", this);
-     //   stopService(intent);
-
+        //    register the  Receiver to the app and tha wanted action
         IntentFilter intentFilter = new IntentFilter();
-//        intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
-//        intentFilter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
-//        intentFilter.addAction(Intent.ACTION_TIME_CHANGED);
-       // intentFilter.addAction(Intent.ACTION_TIME_TICK);
+
         intentFilter.addAction("com.javacodegeeks.android.A_CUSTOM_INTENT");
         registerReceiver(new MyBroadcastReceiver(), intentFilter);
 
@@ -107,13 +106,12 @@ public class NavigationDrawer extends AppCompatActivity {
          Txt_welcomeUser= findViewById(R.id.Txt_welcome_user);
          Txt_welcomeUser.setText("welcome user: " + email);
 
-     //    checkdate();
+       //  checkdate();
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-            //    Toast.makeText(getBaseContext(), Double.toString(location.getLatitude()) + " : " + Double.toString(location.getLongitude()), Toast.LENGTH_LONG).show();
                 double curLatitude = location.getLatitude();
                 double curLongitude = location.getLongitude();
             }
@@ -123,70 +121,6 @@ public class NavigationDrawer extends AppCompatActivity {
         };
 
     }
-public ViewModelStoreOwner getself(){return  NavigationDrawer.this;}
-
-    public void checkdate () {
-
-        fragmentsVM = new ViewModelProvider(this).get(FragmentsVM.class);
-
-
-        fragmentsVM.getIsSuccess().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean t) {
-                if (t)
-                    Toast.makeText(NavigationDrawer.this, "Data Inserted", Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(NavigationDrawer.this, "Data Not Inserted", Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        try {
-
-                String travelDate ;
-                travelDate =  "2020"+"-"+"02"+"-"+"25";
-                 String  travelDate2 =  "2020"+"-"+"02"+"-"+"30";
-                Date tDate = new Travel.DateConverter().fromTimestamp(travelDate);
-                 Date tDate2 = new Travel.DateConverter().fromTimestamp(travelDate2);
-                if (tDate == null)
-                    throw new Exception("שגיאה בתאריך");
-
-//                HashMap<String, Boolean> company =new HashMap<String, Boolean>();
-//                company.put("Afikim",Boolean.FALSE);
-//                company.put("SuperBus",Boolean.FALSE);
-//                company.put("SmartBus",Boolean.FALSE);
-//                company.put("SmartBus",Boolean.TRUE);
-//                Travel.RequestType requestType= Travel.RequestType.sent;
-
-//                Travel travel1 = new Travel("rabi","026456677","ddkill8@gmail.com",tDate,tDate,5,
-//                        new UserLocation(10.0, 20.0), new UserLocation(30.0, 40.0) ,requestType,true,company);
-
-//                fragmentsVM.addTravel(travel1);
-
-//                travel1.setClientName("ayala");
-//                navigationDrawerVM.updateTravel(travel1);
-
-                Travel travel2 = new Travel();
-                travel2.setClientName("new gay");
-                travel2.setClientPhone("026334512");
-                travel2.setClientEmail("ddkill8@gmail.com");
-                travel2.setPickupAddress(new UserLocation(	31.934466609645973, 35.02629946297578));
-                travel2.setDetentionAddress(new UserLocation(31.776873932302315, 35.23451923131213));
-                travel2.setTravelDate(tDate);
-                travel2.setArrivalDate(tDate2);
-                travel2.setRequestType(Travel.RequestType.sent);
-                travel2.setCompany(new HashMap<String, Boolean>());
-                travel2.getCompany().put("Egged",Boolean.FALSE);
-                travel2.getCompany().put("TsirTour",Boolean.FALSE);
-                travel2.setVIPBUS(true);
-
-               fragmentsVM.addTravel(travel2);
-
-            } catch (Exception e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -261,5 +195,50 @@ public ViewModelStoreOwner getself(){return  NavigationDrawer.this;}
         alertDialog.show();
 
     }
+    // add data to check the app
+    public void checkdate () {
 
+        fragmentsVM = new ViewModelProvider(this).get(FragmentsVM.class);
+        fragmentsVM.getIsSuccess().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean t) {
+                if (t)
+                    Toast.makeText(NavigationDrawer.this, "Data Inserted", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(NavigationDrawer.this, "Data Not Inserted", Toast.LENGTH_LONG).show();
+
+            }
+        });
+        try {
+            String travelDate ;
+            travelDate =  "2020"+"-"+"02"+"-"+"25";
+            String  travelDate2 =  "2020"+"-"+"02"+"-"+"30";
+            String  travelDate3 =  "2020"+"-"+"02"+"-"+"28";
+            Date tDate = new Travel.DateConverter().fromTimestamp(travelDate);
+            Date tDate2 = new Travel.DateConverter().fromTimestamp(travelDate2);
+            Date tDate3 = new Travel.DateConverter().fromTimestamp(travelDate3);
+            if (tDate == null)
+                throw new Exception("date error");
+
+            Travel travel1 = new Travel();
+            travel1.setClientName("abi");
+            travel1.setClientPhone("026334512");
+            travel1.setClientEmail("ddkill8@gmail.com");
+            travel1.setPickupAddress(new UserLocation(	31.934466609645973, 35.02629946297578));
+            travel1.setDetentionAddress(new UserLocation(31.776873932302315, 35.23451923131213));
+            travel1.setTravelDate(tDate);
+            travel1.setArrivalDate(tDate2);
+            travel1.setRequestType(Travel.RequestType.sent);
+            travel1.setCompany(new HashMap<String, Boolean>());
+            travel1.getCompany().put("Egged",Boolean.FALSE);
+            travel1.getCompany().put("TsirTour",Boolean.FALSE);
+            travel1.setVIPBUS(true);
+
+            fragmentsVM.addTravel(travel1);
+        }
+        catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+    }
 }

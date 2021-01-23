@@ -15,13 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mysecondapplication.Entities.Travel;
-import com.example.mysecondapplication.R;
+import com.example.mysecondapplication.*;
 import com.example.mysecondapplication.UI.recyclerView.ListAdapterTravel;
 
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * the travels requests relevant to the specific user that is now logged in the app.
+ * displays the travel requests that are not closed.
+ */
 public class RegisteredTravels extends Fragment {
 
 
@@ -29,8 +32,11 @@ public class RegisteredTravels extends Fragment {
     ListAdapterTravel adapter;
     RecyclerView recyclerView;
     Context context;
-
     public List<Travel> Travels;
+
+    /**
+     *creates instance of view model
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -38,21 +44,13 @@ public class RegisteredTravels extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_registered_travels, container, false);
 
-//        button=(Button) root.findViewById(R.id.Btn_changeToRun);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(v.getContext(),"click on buttune: ",Toast.LENGTH_LONG).show();
-//            }
-//        });{
 
- //       }
         context =RegisteredTravels.this.getActivity().getBaseContext();
         recyclerView = (RecyclerView) root.findViewById(R.id.company_travel_recyclerView);
-        //make lines between layout in the grafic list
+        //make lines between layout in the graphic list
         DividerItemDecoration itemDecor = new DividerItemDecoration(RegisteredTravels.this.getActivity(),1);
         recyclerView.addItemDecoration(itemDecor);
-        //  get all the travels that of the user  into grafic list
+        //  get all the travels that of the user from the view model and insert into the graphic list
         //  react to changes
         fragmentsVM.getUserTravels().observe(getViewLifecycleOwner(), new Observer<List<Travel>>() {
             @Override
@@ -65,7 +63,6 @@ public class RegisteredTravels extends Fragment {
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(RegisteredTravels.this.getActivity()));
                 recyclerView.setAdapter(adapter);
-
 
             }
         });

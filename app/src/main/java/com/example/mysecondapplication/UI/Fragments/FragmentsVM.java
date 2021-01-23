@@ -16,53 +16,87 @@ import com.example.mysecondapplication.Entities.Travel;
 
 import java.util.List;
 
+/**
+ * transfers the information between the 3 fragments and the lower levels
+ * the VM is not the terminated when we are in the fragments because its linked to navigation drawer
+ */
 public class FragmentsVM extends AndroidViewModel {
   private Context context;
     private MutableLiveData<String> mText;
-    ITravelRepository repository;
+    ITravelRepository repository; //instance of repository to access data
     private MutableLiveData<List<Travel>> UserTravelList = new  MutableLiveData<>();
     private  List<Travel> travelList;
+    //constructor
     public FragmentsVM(Application p) {
       super(p);
 
         repository = TravelRepository.getInstance(p);
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
+  /**
+   *ads a new travel throw repository
+   * @param travel new
+   */
     public void addTravel(Travel travel)
     {
         repository.addTravel(travel);
     }
-    public void updateTravel(Travel travel)
+
+  /**
+   * update the travel in fire base by sending to repository
+   * @param travel update
+   */
+  public void updateTravel(Travel travel)
     {
         repository.updateTravel(travel);
     }
 
+  /**
+   *
+   * @param lat latitude location
+   * @param lon longtitude location
+   * @param maxDis maximum distance between company and the departure location
+   * @return the open travels of the logged in company
+   */
     public MutableLiveData<List<Travel>> getOpenTravels(double lat, double lon,int maxDis)
     {
         return (MutableLiveData<List<Travel>>) repository.getOpenTravels(lat,lon,maxDis);
     }
-  public MutableLiveData<List<Travel>> getallTravels(double lat, double lon,int maxDis)
-  {
-    return (MutableLiveData<List<Travel>>) repository.getAllTravels();
-  }
 
 
+  /**
+   *
+   * @return the not closed travel requests of the logged in user
+   */
   public MutableLiveData<List<Travel>> getUserTravels()
     {
 
         return  repository.getUserTravels();
 
     }
-    public MutableLiveData<List<Travel>> gethistoryTravels()
+
+  /**
+   *
+   * @return all the travel requests in app history that are closed
+   * updated from the room
+   */
+  public MutableLiveData<List<Travel>> gethistoryTravels()
     {
         return (MutableLiveData<List<Travel>>) repository.getHistoryTravels();
     }
-    public MutableLiveData<Boolean> getIsSuccess()
+
+  /**
+   *
+   * @return if the update in firebase was successful
+   */
+  public MutableLiveData<Boolean> getIsSuccess()
     {
         return repository.getIsSuccess();
     }
+
+  /**
+   *
+    * @return return the email the current user logged in
+   */
     public String getUserEmail(){return repository.getUserEmail();}
 }

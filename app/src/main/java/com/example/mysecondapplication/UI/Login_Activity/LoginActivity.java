@@ -31,8 +31,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * the entering  screen of the app
+ * requires signing up and logging into app via firebase authentication with email and password
+ */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
-        public FirebaseAuth mAuth;
+        public FirebaseAuth mAuth;// handler to firebase service's
         private EditText mEmailField;
         private EditText mPasswordField;
         private Button Btn_signIn;
@@ -41,23 +45,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         private Button Btn_use_last_user_details;
         private ProgressDialog mProgressDialog;
         private TextView Txt_welcome;
-        SharedPreferences sharedpreferences;
-        private loginViewModel loginViewModel;
-        private String regex = "^(?=.*[0-9])"//string to valid password
+        SharedPreferences sharedpreferences;//save the user details
+        private String regex = "^(?=.*[0-9])"//string to validate password
                 + "(?=.*[a-z])(?=.*[A-Z])"
                 + "(?=\\S+$)." +
                 "{8,20}$";
 
-
+    /**
+     * initializing the logging in view
+     * @param savedInstanceState
+     */
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_login);
 
-            sharedpreferences = getSharedPreferences("USER", Context.MODE_PRIVATE);
+            sharedpreferences = getSharedPreferences("USER", Context.MODE_PRIVATE);//create instance of shared preferences to save user details
 
             mAuth = FirebaseAuth.getInstance();
-            // Views
+            // linking the variables the the graphic objects
             mEmailField = (EditText) findViewById(R.id.field_email);
             mPasswordField = (EditText) findViewById(R.id.field_password);
             Btn_signIn = (Button) findViewById(R.id.button_sign_in);
@@ -65,12 +71,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Txt_welcome=(TextView) findViewById(R.id.Txt_welcome);
             Btn_verify_email=findViewById(R.id.Btn_verify_email);
             Btn_use_last_user_details=findViewById(R.id.user_details);
+
             //set objects color
             Btn_signIn.setBackgroundColor(Color.BLUE);
             Btn_signUp.setBackgroundColor(Color.BLUE);
             Txt_welcome.setTextColor(Color.BLUE);
             Btn_verify_email.setBackgroundColor(Color.RED);
             Btn_use_last_user_details.setBackgroundColor(Color.RED);
+
             // Click listeners
             Btn_signIn.setOnClickListener(this);
             Btn_signUp.setOnClickListener(this);
@@ -78,21 +86,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Btn_use_last_user_details.setOnClickListener(this);
             Btn_verify_email.setVisibility(View.GONE);
 
-        List<UserLocation> list = new LinkedList<UserLocation>();
-        list.add( new UserLocation(20.0, 20.0));
 
-        HashMap<String, Boolean> company =new HashMap<String, Boolean>();
-        company.put("Afikim",Boolean.FALSE);
-        company.put("SuperBus",Boolean.FALSE);
-        company.put("SmartBus",Boolean.FALSE);
-        company.put("SmartBus",Boolean.TRUE);
 
     }
 
-
-
-
-        @Override
+    /**
+     * paring the clicks of various  buttons to the wanted function
+     * @param v
+     */
+    @Override
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.button_sign_in:
@@ -109,17 +111,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
 
+    /**
+     *  sign in the user to the app with firebase authentication with email and password
+     */
         private void signIn() {
-            Log.d("MainActivity", "signIn");
-            if (!validateForm()) {
+            if (!validateForm()) { //check validation of the user fields
                 return;
             }
              showProgressDialog();
+            // save the user details to use next time
             String email = mEmailField.getText().toString();
             String password = mPasswordField.getText().toString();
             final FirebaseUser user = mAuth.getCurrentUser();
-
-
+           // Listener to see if sing in  successful
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -127,11 +131,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Log.d("MainActivity", "signIn:onComplete:" + task.isSuccessful());
                                 hideProgressDialog();
                                 if (user.isEmailVerified())
+                                    //check if user has valid his email address if not he wont be able to go to next screen
                                 {
-                                  //  Toast.makeText(getApplicationContext(), "email verifid Successfuly", Toast.LENGTH_SHORT).show();
-                                    if (task.isSuccessful()) {
-                                      //  Toast.makeText(LoginActivity.this, "Sign In Successful",
-                                     //           Toast.LENGTH_SHORT).show();
+                                    if (task.isSuccessful()) {//check that the Sign In was successful
+                                        saveUserDetails(email,password);
                                         goToNavigationDrawer(email);
 
                                     } else {
@@ -144,27 +147,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                         });
         }
-         private void goToNavigationDrawer(String email){
+
+    /**
+     * pass the user to the NavigationDrawer screen
+     * @param email the user email
+     */
+    private void goToNavigationDrawer(String email){
              Intent i = new Intent(this, NavigationDrawer.class );
              i.putExtra("email",email);
              startActivity(i);
 
          }
-        private void newAccount() {
-            Log.d("MainActivity", "signUp");
-            if (!validateForm()) {
+
+    /**
+     * create new account to the user with firebase authentication with email and password
+     */
+    private void newAccount() {
+            if (!validateForm()) {//check validation of the user fields
                 return;
             }
             showProgressDialog();
+            // save the user details to use next time
             String email = mEmailField.getText().toString();
             String password = mPasswordField.getText().toString();
+            // create User With Email And Password , Listener to see if work successful
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Log.d("MainActivity", "createUser:onComplete:" + task.isSuccessful());
                             hideProgressDialog();
-                            if (task.isSuccessful()) {
+                            if (task.isSuccessful()) {//check  if creation was successful
                                 Toast.makeText(LoginActivity.this, "Successful! Please verify your email to Sign In",
                                         Toast.LENGTH_SHORT).show();
                                     saveUserDetails(email,password);
@@ -176,19 +189,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     });
         }
+
+    /**
+     * save the user details to next use
+     * @param email the user email
+     * @param passward the user passward
+     */
         private void saveUserDetails(String email ,String passward){
-
             SharedPreferences.Editor editor = sharedpreferences.edit();
-
-
             editor.putString("Email", email);
             editor.putString("Password", passward);
             editor.commit();
         }
+    /**
+     * get the user details from last use
+     */
         public void fillUserDetails() {
-            //   result.setText("Name is "+sharedpreferences.getString("Email","No name")+" Address "+ sharedpreferences.getString("Password","No Password"));
-         //   Toast.makeText(LoginActivity.this, ("Name is "+sharedpreferences.getString("Email","No Email")+" Address "+ sharedpreferences.getString("Password","No Password"))
-        //            ,  Toast.LENGTH_SHORT).show();
             mEmailField.setText(sharedpreferences.getString("Email","No Email"));
             mPasswordField.setText(sharedpreferences.getString("Password","No Password"));
         }
@@ -221,12 +237,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 "12"    /* minimumVersion */)
                         .build();
 
-
+    /**
+     * send Email Verification to the user
+     */
         private void sendEmailVerification() {
             // Disable Verify Email button
             findViewById(R.id.Btn_verify_email).setEnabled(false);
             final FirebaseUser user = mAuth.getCurrentUser();
-            user.sendEmailVerification()
+            user.sendEmailVerification()//Listener to see if email sent successfully
                     .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -248,6 +266,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     });
         }
 
+    /**
+     * @return if the user details are valid - in the wanted Pattern
+     */
         private boolean validateForm() {
             boolean result = true;
             if (    TextUtils.isEmpty(mEmailField.getText().toString()) ||
@@ -266,23 +287,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             return result;
         }
-//        @Override
-//        public boolean onCreateOptionsMenu(Menu menu) {
-//            // Inflate the menu; this adds items to the action bar if it is present.
-//            getMenuInflater().inflate(R.menu.menu_main, menu);
-//            return true;
-//        }
-//        @Override
-//        public boolean onOptionsItemSelected(MenuItem item) {
-//            // Handle action bar item clicks here. The action bar will
-//            // automatically handle clicks on the Home/Up button, so long
-//            // as you specify a parent activity in AndroidManifest.xml.
-//            int id = item.getItemId();
-//            //noinspection SimplifiableIfStatement
-//         //   if (id == R.id.action_settings) {
-//                return true;
-//            }
-//        //    return super.onOptionsItemSelected(item);
-//        }
 
     }

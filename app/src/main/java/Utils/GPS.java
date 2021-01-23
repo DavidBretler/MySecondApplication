@@ -14,9 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
 
-import com.example.mysecondapplication.R;
 import com.google.android.gms.maps.model.LatLng;
 
 

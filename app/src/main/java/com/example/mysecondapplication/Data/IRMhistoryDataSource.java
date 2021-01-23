@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData;
 import com.example.mysecondapplication.Entities.Travel;
 
 import java.util.List;
-
+/**
+ * interface for repository to enable us to change data source
+ * design by contract
+ */
 public interface IRMhistoryDataSource {
     public void addTravel(Travel p);
 

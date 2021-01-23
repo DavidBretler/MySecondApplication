@@ -29,20 +29,27 @@ import com.example.mysecondapplication.UI.recyclerView.ListAdapterCompany;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * the travels requests relevant to the specific company that is now logged in the app.
+ * displays the travel requests that are in open and sent status.
+ */
 public class CompanyTravels extends Fragment {
 
     private FragmentsVM fragmentsVM;
     Location location;
     LocationManager locationManager ;
     LocationListener locationListener;
-    double curLatitude;
-    double curLongitude;
+    double curLatitude; //the current location latitude
+    double curLongitude;//the current location longtitude
     Context contex;
     RecyclerView recyclerView;
     ListAdapterCompany adapter;
     public List<Travel> Travels;
-    public int    maxDis=30000;
+    public int    maxDis=30000; //the maximum distance from user to ride location to display.
+
+    /**
+     * create an instance of view model
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         fragmentsVM =
@@ -51,18 +58,10 @@ public class CompanyTravels extends Fragment {
          contex =this.getActivity();
          //active locationManager to find current location
          locationManager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
-//     button= root.findViewById(R.id.button);
-//      button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                maxDis=20000;
-//                  Toast.makeText(contex,"num"+maxDis,Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        //the location listener updates every time the user changes location
          locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                  // Toast.makeText( contex , Double.toString(location.getLatitude()) + " : " + Double.toString(location.getLongitude()), Toast.LENGTH_LONG).show();
                  curLatitude = location.getLatitude();
                  curLongitude = location.getLongitude();
             }
@@ -114,6 +113,11 @@ public class CompanyTravels extends Fragment {
 
         return root;
     }
+
+    /**
+     * check approval to use GPS
+     * activate listener with accuracy parameters
+     */
         public void getLocation()
             {
 

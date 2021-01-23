@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mysecondapplication.Entities.Travel;
-import com.example.mysecondapplication.R;
+import com.example.mysecondapplication.*;
 import com.example.mysecondapplication.UI.Fragments.FragmentsVM;
 
 import java.io.IOException;
@@ -31,7 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-
+/**
+ * show all the travel request of the user currently logged in except closed Travels
+ */
 public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.ViewHolder>  {
     private Travel[] listdata;
     Context context;
@@ -40,13 +42,20 @@ public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.Vi
     FragmentActivity viewModelStore;
     public SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
+    //constructor
     public ListAdapterTravel(Travel[] listdata, Context context, FragmentActivity viewModelStore) {
         this.listdata = listdata;
         this.context=context;
         this.viewModelStore=viewModelStore;
     }
 
-
+    /**
+     * connect the ViewHolder to the wanted layout
+     * create instance of fragmentsVM
+     * @param parent the view group that the view will be added to
+     * @param viewType type of view
+     * @return the view Holder
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -56,9 +65,14 @@ public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.Vi
 
         return viewHolder;
     }
-
+    /**
+     * @param holder hold the wanted layout and graphic objects
+     * @param position holds the current position in list
+     * insert all the wanted data from the travel to the  graphic objects
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        //create location of Pickup Address and destination Address
         location = new Location(LocationManager.GPS_PROVIDER);
         location.setLatitude(listdata[position].getPickupAddress().getLat());
         location.setLongitude(listdata[position].getPickupAddress().getLon());
@@ -76,27 +90,48 @@ public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.Vi
         ArrayAdapter<String> adapter= new ArrayAdapter<> (context ,android.R.layout.simple_spinner_item, new ArrayList<String>( listdata[position].getCompany().keySet()) )  ;
         holder.spinner.setAdapter(adapter);
 
-
+        //updates the travel status to run
         holder.Btn_chngeToRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(myListData.getRequestType()!=Travel.RequestType.run) {
-                    myListData.setRequestType(Travel.RequestType.run);
-                    fragmentsVM.updateTravel(myListData);
-                    Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+                boolean aproove=false;
+                for (boolean status :myListData.getCompany().values()) {
+                    if (status)//check that company in approved before change statuse of travel
+                    {   aproove=true;
+                        if (myListData.getRequestType() != Travel.RequestType.run) {
+                                myListData.setRequestType(Travel.RequestType.run);
+                                fragmentsVM.updateTravel(myListData);
+                                Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+                                break;
+                        } else
+                           { Toast.makeText(context, " already in run statues", Toast.LENGTH_LONG).show();
+                              break;}
+                    }
                 }
-                else
-                    Toast.makeText(context, " already in run statues", Toast.LENGTH_LONG).show();
+             if (!aproove)
+                 Toast.makeText(context, "please approve company first", Toast.LENGTH_LONG).show();
+
             }
         });
+        //updates the travel status to closed
         holder.Btn_chngeToclose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    myListData.setRequestType(Travel.RequestType.close);
-                    fragmentsVM.updateTravel(myListData);
-                    Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+                boolean aproove=false;
+                for (boolean status :myListData.getCompany().values())
+                {
+                    if (status){//check that compaby in approved before change statuse of travel
+                        aproove=true;
+                        myListData.setRequestType(Travel.RequestType.close);
+                        fragmentsVM.updateTravel(myListData);
+                        Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
+                        break;}
+                }
+                if (!aproove)
+                    Toast.makeText(context, "please approve company first", Toast.LENGTH_LONG).show();
                 }
         });
+        //Approve Company to provide travel service
         holder.Btn_AprroveCompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,24 +149,17 @@ public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.Vi
                        Toast.makeText(context, "company is already approved", Toast.LENGTH_LONG).show();
             }
         });
-//        fragmentsVM.getIsSuccess().observe(viewModelStore, new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(Boolean t) {
-//                   flag=false;
-//                   if (t)
-//                       Toast.makeText(context, "Data updated", Toast.LENGTH_LONG).show();
-//                   else
-//                       Toast.makeText(context, "Data Not updated", Toast.LENGTH_LONG).show();
-//            }
-//        });
-
     }
-
+    /**
+     * @return number of items
+     */
     @Override
     public int getItemCount() {
         return listdata.length;
     }
-
+    /**
+     * linking the graphic objects to the fields in Travel
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView arrivalDateTextView;
         public TextView travelDateTextView;
@@ -153,6 +181,11 @@ public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.Vi
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
         }
     }
+    /**
+     * convert location to address
+     * @param location a instance holding latitude and longitude
+     * @return string address of location
+     */
     public String getPlace(Location location) {
         String cityName="" ;
         String stateName="";

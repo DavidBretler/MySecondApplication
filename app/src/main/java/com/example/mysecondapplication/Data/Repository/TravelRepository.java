@@ -23,12 +23,16 @@ import java.util.List;
 
 import Utils.GPS;
 
+/**
+ * abstract by transferring  the data from different data base- firebase and room  to upper layers
+ */
 public class TravelRepository implements ITravelRepository {
     IFBtravelDataSource iFBtravelDataSource;
     private IRMhistoryDataSource iRMhistoryDataSource;
-    private MutableLiveData<List<Travel>> openTravels = new MutableLiveData<>();
-    private MutableLiveData<List<Travel>> UserTravels = new MutableLiveData<>();
-    private MutableLiveData<List<Travel>> HistoryTravels = new MutableLiveData<>();
+
+    private MutableLiveData<List<Travel>> openTravels = new MutableLiveData<>(); //the list for the company
+    private MutableLiveData<List<Travel>> UserTravels = new MutableLiveData<>();//the list for the user
+    private MutableLiveData<List<Travel>> HistoryTravels = new MutableLiveData<>();//the list for the owner of app
     private List<Travel> travelList;
     private List<Travel> userTravelList;
 
@@ -39,6 +43,12 @@ public class TravelRepository implements ITravelRepository {
 
     private static TravelRepository instance;
     NavigationDrawer navigationDrawer;
+
+    /**
+     * singleton to make sure we have only one instance of the TravelRepository
+     * @param application for the constructor
+     * @return the instance old or new
+     */
     public static TravelRepository getInstance(Application application) {
         if (instance == null) {
             instance = new TravelRepository(application);
@@ -46,6 +56,10 @@ public class TravelRepository implements ITravelRepository {
         return instance;
     }
 
+    /**
+     * get tha data from data base and pass to the upper layers and to the room
+     * @param application
+     */
     private TravelRepository(Application application) {
         iFBtravelDataSource = FBtravelDataSource.getInstance();
         iRMhistoryDataSource = new RMhistoryDataSource(application.getApplicationContext());
@@ -61,9 +75,7 @@ public class TravelRepository implements ITravelRepository {
             public void onTravelsChanged() {
                 travelList = iFBtravelDataSource.getAllTravels();
                 AllTravels.setValue(travelList);
-
                 findUserTravelList();
-           //     findOpenTravelList();
 
               //push all close travel to the room
                 for (Travel t :travelList)
@@ -77,7 +89,7 @@ public class TravelRepository implements ITravelRepository {
         // make sure we react to changes in the firebase
         iFBtravelDataSource.setNotifyToTravelListListener(notifyToTravelListListener);
 
-        //get the date from the room
+        //get the data from the room
         iRMhistoryDataSource.getTravels().observeForever(new Observer<List<Travel>>()  {
             @Override
             public void onChanged(List<Travel> historyTravelList) {
@@ -89,9 +101,12 @@ public class TravelRepository implements ITravelRepository {
         });
 
     }
-    public String getUserEmail(){return  user.getEmail();}
+    public String getUserEmail(){  return  user.getEmail();}
+
+    /**
+     * find users travel list using his Email
+     */
     public void findUserTravelList() {
-        //find the connected user travel list
         userTravelList = new LinkedList<Travel>();
         String UserEmail = user.getEmail();
         for (Travel t : travelList)
@@ -101,11 +116,15 @@ public class TravelRepository implements ITravelRepository {
         UserTravels.setValue(userTravelList);
     }
 
+    /**
+     * returns the open travels to the company
+     *  when  dis is less then maxDis from pickup address
+     * @param lat latitude position
+     * @param lon longitude position
+     * @param maxDis maximum distance from company the present travels
+     */
     public void findOpenTravelList(double lat,double lon,int maxDis) {
-        //returns the open travels to the company
-        // when  dis is less then maxDis from picapp address
-
-        navigationDrawer = new NavigationDrawer();
+               navigationDrawer = new NavigationDrawer();
         LinkedList<Travel> companyTravels = new LinkedList<Travel>();
         for (Travel t : travelList) {
             if (t.getRequestType().toString().equals("sent") || t.getRequestType().toString().equals("accepted")) {
@@ -118,9 +137,10 @@ public class TravelRepository implements ITravelRepository {
                 temp1.setLongitude(t.getPickupAddress().getLon());
 
                 double  distance= temp.distanceTo(temp1);
-          //     Toast.makeText(this.application.getApplicationContext(), " dis is :" + distance, Toast.LENGTH_LONG).show();
-            if(distance<maxDis)
-              companyTravels.add(t);
+
+
+               if(distance<maxDis)
+                  companyTravels.add(t);
 
             }
         }
