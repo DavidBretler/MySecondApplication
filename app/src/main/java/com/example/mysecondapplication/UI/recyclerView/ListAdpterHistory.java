@@ -82,7 +82,7 @@ import java.util.HashMap;
             holder.Txt_name.setText("name : "+myListData.getClientName());
 
             long diff = myListData.getArrivalDate().getTime() - myListData.getTravelDate().getTime();
-            holder.Txt_numDaysRide.setText("num of days: "+diff / (1000 * 60 * 60 * 24));
+            holder.Txt_numDaysRide.setText("num of days: " +diff / (1000 * 60 * 60 * 24));
 
             // send Mail to the company to request commission
             holder.Btn_sendEmail.setOnClickListener(new View.OnClickListener() {

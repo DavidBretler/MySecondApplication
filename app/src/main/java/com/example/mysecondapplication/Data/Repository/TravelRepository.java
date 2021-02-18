@@ -187,5 +187,4 @@ public class TravelRepository implements ITravelRepository {
         return iFBtravelDataSource.getIsSuccess();
     }
 
-
 }

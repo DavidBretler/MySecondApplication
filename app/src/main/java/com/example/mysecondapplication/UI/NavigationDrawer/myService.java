@@ -67,9 +67,7 @@ public class myService extends Service {
                     travelsNum=travelList.size();
                 }
             });
-
             // add data to the Intent
-
         }
   //      Toast.makeText(this,"onStartCommand."+travelsNum , Toast.LENGTH_LONG).show();
         return START_STICKY;

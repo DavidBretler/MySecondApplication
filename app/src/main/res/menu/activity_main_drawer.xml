@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_add_travel"
+            android:icon="@drawable/road2"
+            android:title="Add new Travel" />
+        <item
             android:id="@+id/nav_RegisteredTravels"
             android:icon="@drawable/road"
             android:title="@string/RegisteredTravels" />

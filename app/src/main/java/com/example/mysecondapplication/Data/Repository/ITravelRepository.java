@@ -17,12 +17,12 @@ public interface ITravelRepository {
     void updateTravel(Travel travel);
     MutableLiveData<List<Travel>> getAllTravels();
 
-    public MutableLiveData<List<Travel>> getUserTravels();
+     MutableLiveData<List<Travel>> getUserTravels();
 
     MutableLiveData<List<Travel>> getOpenTravels(double lat,double lon,int maxDis);
 
     MutableLiveData<List<Travel>> getHistoryTravels();
 
     MutableLiveData<Boolean> getIsSuccess();
-    public String getUserEmail();
+     String getUserEmail();
 }

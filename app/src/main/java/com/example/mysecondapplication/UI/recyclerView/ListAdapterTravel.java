@@ -120,7 +120,7 @@ public class ListAdapterTravel extends RecyclerView.Adapter<ListAdapterTravel.Vi
                 boolean aproove=false;
                 for (boolean status :myListData.getCompany().values())
                 {
-                    if (status){//check that compaby in approved before change statuse of travel
+                    if (status){//check that company in approved before change statuse of travel
                         aproove=true;
                         myListData.setRequestType(Travel.RequestType.close);
                         fragmentsVM.updateTravel(myListData);

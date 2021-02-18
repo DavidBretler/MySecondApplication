@@ -22,4 +22,9 @@
         android:name="com.example.mysecondapplication.UI.Fragments.HistoryTravels"
         android:label="@string/HistoryTravels"
         tools:layout="@layout/fragment_history_travels" />
+    <fragment
+        android:id="@+id/nav_add_travel"
+        android:name="com.example.mysecondapplication.UI.Fragments.AddNewTravel"
+        android:label="Add New Travel"
+        tools:layout="@layout/fragment_addtravel" />
 </navigation>

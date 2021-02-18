@@ -99,4 +99,8 @@ public class FragmentsVM extends AndroidViewModel {
     * @return return the email the current user logged in
    */
     public String getUserEmail(){return repository.getUserEmail();}
+
+  public LiveData<Boolean> getTravelUpdate() {
+    return repository.getIsSuccess();
+  }
 }

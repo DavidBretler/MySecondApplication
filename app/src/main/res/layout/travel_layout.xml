@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="250dp"
         android:layout_marginLeft="250dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="45dp"
         android:text="choose company:"
         android:textColor="#1E3091"
         android:textColorHighlight="#091973"
